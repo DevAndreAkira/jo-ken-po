@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jo-ken-po</title>
+    <script src="./js/pixi.min.js"></script>
+
+    <script>
+
+        // Lógica
+
+        let btns = document.querySelectorAll("button");
+
+        btns.forEach((e, index) => {
+
+            btns[index].onclick = function () {
+                let maquina = Math.floor(Math.random() * (3)) + 1;
+                if (maquina === index) {
+                    alert("Empate")
+                }
+                else if ((index === 1 && maquina === 3) || (index === 2 && maquina === 1) || (index === 3 && maquina === 2)) {
+                    alert("Ganhou")
+
+                }
+                else {
+                    alert("Perdeu")
+                }
+            }
+        })
+
+        // Lógica
+
+
+        let app;
+
+        window.onload = function () {
+            app = new PIXI.Application(
+                {
+                    width: 360,
+                    height: 600,
+                    backgroundColor: 0xAAAAAA
+                }
+            );
+
+            document.body.appendChild(app.view);
+
+            // Setando as imagens dos botões
+            const textureButton0 = PIXI.Texture.from('./img/pedra.png');
+            const textureButton1 = PIXI.Texture.from('./img/papel.png');
+            const textureButton2 = PIXI.Texture.from('./img/tesoura.png');
+            const array = [textureButton0, textureButton1, textureButton2];
+
+            const buttons = [];
+
+            const buttonPositions = [
+                app.screen.width / 2 - 100, app.screen.height / 2 + 150,
+                app.screen.width / 2, app.screen.height / 2 + 150,
+                app.screen.width / 2 + 100, app.screen.height / 2 + 150,
+            ];
+
+            for (let i = 0; i < 3; i++) {
+                const button = new PIXI.Sprite(array[i]);
+
+                button.anchor.set(0.5);
+                button.x = buttonPositions[i * 2];
+                button.y = buttonPositions[i * 2 + 1];
+                button.interactive = true;
+                button.buttonMode = true;
+
+                app.stage.addChild(button);
+                buttons.push(button);
+            }
+
+            buttons.forEach((e, index) => {
+                buttons[index].on('click', function () {
+                    let maquina = Math.floor(Math.random() * (3)) + 1;
+                    alert("Você escolheu " + (index === 0 ? "pedra" : (index === 1 ? "papel" : (index === 2 ? "tesoura" : ''))));
+                    alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
+                    if (maquina === (index + 1)) {
+                        alert("Empate")
+                    }
+                    else if ((index === 0 && maquina === 3) || (index === 1 && maquina === 1) || (index === 2 && maquina === 2)) {
+                        alert("Ganhou")
+                    }
+                    else {
+                        alert("Perdeu")
+                    }
+                });
+            })
+
+        }
+    </script>
+</head>
+
+<body style="text-align:center">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+</body>
+
+</html>
