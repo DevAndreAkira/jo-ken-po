@@ -20,10 +20,11 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             overflow: hidden;
         }
-        
+
         @media(min-width: 647px) {
 
             body {
@@ -77,6 +78,18 @@
             }
 
             document.body.appendChild(app.view);
+            let pontos = 0;
+
+            function mudançaTema() {
+                if (pontos < 0) {
+                    document.body.style.transition = '.5s';
+                    document.body.style.filter = 'hue-rotate(130deg)';
+                }
+                else if (pontos >= 0) {
+                    document.body.style.transition = '.5s';
+                    document.body.style.filter = 'hue-rotate(0deg)';
+                }
+            }
 
             // Teste circulo
             const bunny = PIXI.Sprite.from('./img/circle1.png');
@@ -126,22 +139,44 @@
 
                 function onButtonUp() {
                     let maquina = Math.floor(Math.random() * (3)) + 1;
-                    alert("Você escolheu " + (i === 0 ? "pedra" : (i === 1 ? "papel" : (i === 2 ? "tesoura" : ''))));
-                    alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
+                    // alert("Você escolheu " + (i === 0 ? "pedra" : (i === 1 ? "papel" : (i === 2 ? "tesoura" : ''))));
+                    // alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
                     if (maquina === (i + 1)) {
                         resultText.text = 'Empate';
+                        mudançaTema();
                     }
                     else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
                         resultText.text = 'Ganhou';
+                        pontos = pontos + 1;
+                        pontosText.text = pontos;
+                        mudançaTema();
                     }
                     else {
                         resultText.text = 'Perdeu';
+                        pontos = pontos - 1;
+                        pontosText.text = pontos;
+                        mudançaTema();
                     }
                 }
 
                 app.stage.addChild(button);
                 buttons.push(button);
             }
+
+            resultado = 'Escolha um simbolo';
+
+            const pontosText = new PIXI.Text(pontos, {
+                fontFamily: 'Share Tech Mono',
+                fontSize: 18,
+                fontWeight: 100,
+                fill: '#ffffff',
+            });
+
+            pontosText.anchor.set(0.5);
+            pontosText.x = app.screen.width / 2;
+            pontosText.y = app.screen.height / 2 + 100;
+
+            app.stage.addChild(pontosText);
 
             // JS Vanilla
             // buttons.forEach((e, index) => {
@@ -164,29 +199,18 @@
             // TEXTO RESULTADO
             resultado = 'Escolha um simbolo';
 
-            // function teste(resultado) {
-
             const resultText = new PIXI.Text(resultado, {
                 fontFamily: 'Share Tech Mono',
                 fontSize: 18,
                 fontWeight: 100,
                 fill: '#ffffff',
-
             });
 
             resultText.anchor.set(0.5);
             resultText.x = app.screen.width / 2;
             resultText.y = app.screen.height / 2 + 75;
-            // resultText.text = "Teste";
 
             app.stage.addChild(resultText);
-            // }
-            // TEXTO RESULTADO
-
-
-
-
-
 
             // Texto
             window.WebFontConfig = {
@@ -218,6 +242,9 @@
 
             app.stage.addChild(basicText);
             // Texto
+
+
+            // MUDANDO CENARIO
         }
     </script>
 </head>
