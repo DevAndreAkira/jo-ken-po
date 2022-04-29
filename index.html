@@ -19,13 +19,25 @@
         let app;
 
         window.onload = function () {
-            app = new PIXI.Application(
-                {
-                    width: 360,
-                    height: 600,
-                    backgroundColor: 0x000000
-                }
-            );
+            if (innerWidth >= 1080) {
+                app = new PIXI.Application(
+                    {
+                        width: 1280,
+                        height: 600,
+                        backgroundColor: 0x000000
+                    }
+                );
+            }
+            else {
+
+                app = new PIXI.Application(
+                    {
+                        width: 360,
+                        height: 600,
+                        backgroundColor: 0x000000
+                    }
+                );
+            }
 
             document.body.appendChild(app.view);
 
@@ -168,7 +180,7 @@
     </script>
 </head>
 
-<body style="text-align:right">
+<body style="text-align:center">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
@@ -177,11 +189,31 @@
             padding: 0;
             box-sizing: border-box;
         }
+        body {
+            overflow: hidden;
+        }
+        
+        @media(min-width: 647px) {
 
-        /* canvas {
-            width: 100vw;
-            height: 100vh;
-        } */
+            body {
+                height: 100vh;
+                background-color: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            canvas {
+                width: 100%;
+            }
+        }
+
+        @media(max-width: 646px) {
+            canvas {
+                width: 100%;
+                height: 100vh;
+            }
+        }
     </style>
 
 </body>
