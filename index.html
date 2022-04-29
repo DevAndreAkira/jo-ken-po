@@ -41,8 +41,8 @@
 
         @media(max-width: 646px) {
             canvas {
-                width: 100%;
-                height: 100vh;
+                /* width: 100%;
+                height: 100vh; */
             }
         }
     </style>
@@ -66,7 +66,7 @@
 
                 app = new PIXI.Application(
                     {
-                        width: 360,
+                        width: "360",
                         height: 600,
                         backgroundColor: 0x000000
                     }
@@ -95,37 +95,6 @@
                 bunny2.rotation -= 0.003;
             });
             // Teste circulo
-
-            // Texto
-            window.WebFontConfig = {
-                google: {
-                    families: ['Share Tech Mono'],
-                },
-
-                active() {
-                    const style = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                    });
-                },
-            };
-
-            const style = new PIXI.TextStyle({
-                fontFamily: 'Share Tech Mono',
-                fontSize: 28,
-                fontWeight: 100,
-                fill: '#ffffff', // gradient
-                wordWrap: true,
-                wordWrapWidth: 440,
-                lineJoin: 'round',
-            });
-
-            const basicText = new PIXI.Text('Arcane soul', style);
-            basicText.anchor.set(0.5);
-            basicText.x = app.screen.width / 2;
-            basicText.y = app.screen.height / 2 - 75;
-
-            app.stage.addChild(basicText);
-            // Texto
 
             // Setando as imagens dos botões
             const textureButton0 = PIXI.Texture.from('./img/pedra.png');
@@ -210,6 +179,42 @@
             app.stage.addChild(resultText);
             // }
             // TEXTO RESULTADO
+
+
+
+
+
+
+            // Texto
+            window.WebFontConfig = {
+                google: {
+                    families: ['Share Tech Mono'],
+                },
+
+                active() {
+                    const style = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                    });
+                },
+            };
+
+            const style = new PIXI.TextStyle({
+                fontFamily: 'Share Tech Mono',
+                fontSize: 28,
+                fontWeight: 100,
+                fill: '#ffffff', // gradient
+                wordWrap: true,
+                wordWrapWidth: 440,
+                lineJoin: 'round',
+            });
+
+            const basicText = new PIXI.Text('Arcane soul', style);
+            basicText.anchor.set(0.5);
+            basicText.x = app.screen.width / 2;
+            basicText.y = app.screen.height / 2 - 75;
+
+            app.stage.addChild(basicText);
+            // Texto
         }
     </script>
 </head>
