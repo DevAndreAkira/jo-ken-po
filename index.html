@@ -10,30 +10,6 @@
 
     <script>
 
-        // Lógica
-
-        let btns = document.querySelectorAll("button");
-
-        btns.forEach((e, index) => {
-
-            btns[index].onclick = function () {
-                let maquina = Math.floor(Math.random() * (3)) + 1;
-                if (maquina === index) {
-                    alert("Empate")
-                }
-                else if ((index === 1 && maquina === 3) || (index === 2 && maquina === 1) || (index === 3 && maquina === 2)) {
-                    alert("Ganhou")
-
-                }
-                else {
-                    alert("Perdeu")
-                }
-            }
-        })
-
-        // Lógica
-
-
         let app;
 
         window.onload = function () {
@@ -70,26 +46,49 @@
                 button.interactive = true;
                 button.buttonMode = true;
 
-                app.stage.addChild(button);
-                buttons.push(button);
-            }
+                button
+                    // Mouse & touch events are normalized into
+                    // the pointer* events for handling different
+                    // button events.
+                    .on('pointerdown', onButtonUp)
 
-            buttons.forEach((e, index) => {
-                buttons[index].on('click', function () {
+                function onButtonUp() {
                     let maquina = Math.floor(Math.random() * (3)) + 1;
-                    alert("Você escolheu " + (index === 0 ? "pedra" : (index === 1 ? "papel" : (index === 2 ? "tesoura" : ''))));
+                    alert("Você escolheu " + (i === 0 ? "pedra" : (i === 1 ? "papel" : (i === 2 ? "tesoura" : ''))));
                     alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
-                    if (maquina === (index + 1)) {
+                    if (maquina === (i + 1)) {
                         alert("Empate")
                     }
-                    else if ((index === 0 && maquina === 3) || (index === 1 && maquina === 1) || (index === 2 && maquina === 2)) {
+                    else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
                         alert("Ganhou")
                     }
                     else {
                         alert("Perdeu")
                     }
-                });
-            })
+                }
+
+                app.stage.addChild(button);
+                buttons.push(button);
+            }
+
+
+            // JS Vanilla
+            // buttons.forEach((e, index) => {
+            //     buttons[index].on('click', function () {
+            //         let maquina = Math.floor(Math.random() * (3)) + 1;
+            //         alert("Você escolheu " + (index === 0 ? "pedra" : (index === 1 ? "papel" : (index === 2 ? "tesoura" : ''))));
+            //         alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
+            //         if (maquina === (index + 1)) {
+            //             alert("Empate")
+            //         }
+            //         else if ((index === 0 && maquina === 3) || (index === 1 && maquina === 1) || (index === 2 && maquina === 2)) {
+            //             alert("Ganhou")
+            //         }
+            //         else {
+            //             alert("Perdeu")
+            //         }
+            //     });
+            // })
 
         }
     </script>
