@@ -78,6 +78,7 @@
             }
 
             document.body.appendChild(app.view);
+
             let pontos = 0;
 
             // Texto
@@ -88,6 +89,7 @@
 
                 active() {
                     init();
+                    init2();
                 },
             };
 
@@ -240,19 +242,21 @@
             // TEXTO RESULTADO
             resultado = 'Escolha um simbolo';
 
-            const resultText = new PIXI.Text(resultado, {
-                fontFamily: 'Share Tech Mono',
-                fontSize: 18,
-                fontWeight: 100,
-                fill: '#ffffff',
-            });
+            function init2() {
 
-            resultText.anchor.set(0.5);
-            resultText.x = app.screen.width / 2;
-            resultText.y = app.screen.height / 2 + 75;
+                const resultText = new PIXI.Text(resultado, {
+                    fontFamily: 'Share Tech Mono',
+                    fontSize: 18,
+                    fontWeight: 100,
+                    fill: '#ffffff',
+                });
 
-            app.stage.addChild(resultText);
+                resultText.anchor.set(0.5);
+                resultText.x = app.screen.width / 2;
+                resultText.y = app.screen.height / 2 + 75;
 
+                app.stage.addChild(resultText);
+            }
 
             // MUDANDO CENARIO
         }
