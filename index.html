@@ -87,28 +87,38 @@
                 },
 
                 active() {
-                    const style = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                    });
+                    init();
                 },
             };
 
-            const style = new PIXI.TextStyle({
-                fontFamily: 'Share Tech Mono',
-                fontSize: 28,
-                fontWeight: 100,
-                fill: '#ffffff', // gradient
-                wordWrap: true,
-                wordWrapWidth: 440,
-                lineJoin: 'round',
-            });
+            (function () {
+                const wf = document.createElement('script');
+                wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'
+                    }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
+                wf.type = 'text/javascript';
+                wf.async = 'true';
+                const s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(wf, s);
+            }());
 
-            const basicText = new PIXI.Text('Arcane soul', style);
-            basicText.anchor.set(0.5);
-            basicText.x = app.screen.width / 2;
-            basicText.y = app.screen.height / 2 - 75;
+            function init() {
+                const style = new PIXI.TextStyle({
+                    fontFamily: 'Share Tech Mono',
+                    fontSize: 28,
+                    fontWeight: 100,
+                    fill: '#ffffff', // gradient
+                    wordWrap: true,
+                    wordWrapWidth: 440,
+                    lineJoin: 'round',
+                });
 
-            app.stage.addChild(basicText);
+                const basicText = new PIXI.Text('Arcane soul', style);
+                basicText.anchor.set(0.5);
+                basicText.x = app.screen.width / 2;
+                basicText.y = app.screen.height / 2 - 75;
+
+                app.stage.addChild(basicText);
+            }
             // Texto
 
             function mudançaTema() {
