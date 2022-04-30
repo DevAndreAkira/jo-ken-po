@@ -57,6 +57,7 @@
         let app;
 
         window.onload = function () {
+            if (innerWidth >= 1080) {
                 app = new PIXI.Application(
                     {
                         width: 1280,
@@ -64,6 +65,17 @@
                         backgroundColor: 0x000000
                     }
                 );
+            }
+            else {
+
+                app = new PIXI.Application(
+                    {
+                        width: 360,
+                        height: 600,
+                        backgroundColor: 0x000000
+                    }
+                );
+            }
 
             document.body.appendChild(app.view);
 
