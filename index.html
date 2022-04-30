@@ -21,13 +21,31 @@
     <meta name="twitter:description" content="Arcane 5 - Jogo de jo-ken-po, experimentação com PixiJS - André Akira">
     <meta name="twitter:image" content="https://devandreakira.github.io/jo-ken-po/img/tela.png">
 
+    <link rel="shortcut icon" href="./img/papel.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
-    <link rel="shortcut icon" href="./img/papel.webp" type="image/x-icon">
+    <!-- Favicon -->
+    <meta name="msapplication-TileImage" content="./img/papel.webp"> <!-- Windows 8 -->
+    <meta name="msapplication-TileColor" content="#000000" /> <!-- Windows 8 color -->
+
+    <link rel="apple-touch-icon" sizes="57x57" href="./img/57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./img/60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./img/72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./img/76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./img/114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./img/120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./img/114.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./img/152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./img/96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./img/192.png">
+    <link data-rh="true" rel="mask-icon" href="./img/papel.webp" color="#171717">
     <title>Arcane 5</title>
 
     <style>
@@ -47,8 +65,15 @@
         }
 
         canvas {
+            /* width: 100%; */
             height: 100vh;
             object-fit: cover;
+        }
+
+        @media(max-width: 646px) {
+            canvas {
+                /* object-fit: cover; */
+            }
         }
     </style>
     <script src="./js/pixi.min.js"></script>
