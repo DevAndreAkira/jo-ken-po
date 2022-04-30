@@ -136,28 +136,39 @@
             }
             // MUDANDO TEMA
 
-            // CIRCULOS
-            const circle1 = PIXI.Sprite.from('./img/circle1.png');
-            const circle2 = PIXI.Sprite.from('./img/circle2.png');
+            function circulos() {
 
-            circle1.anchor.set(0.5);
-            circle2.anchor.set(0.5);
+                // CIRCULOS
+                const circle1 = PIXI.Sprite.from('./img/circle1.png');
+                const circle2 = PIXI.Sprite.from('./img/circle2.png');
 
-            circle1.x = app.screen.width / 2;
-            circle1.y = app.screen.height / 2;
-            circle2.x = app.screen.width / 2;
-            circle2.y = app.screen.height / 2;
+                circle1.anchor.set(0.5);
+                circle2.anchor.set(0.5);
 
-            app.stage.addChild(circle1);
-            app.stage.addChild(circle2);
+                circle1.x = app.screen.width / 2;
+                circle1.y = app.screen.height / 2;
+                circle2.x = app.screen.width / 2;
+                circle2.y = app.screen.height / 2;
 
-            app.ticker.add(() => {
-                circle1.rotation += 0.0015;
-                circle2.rotation -= 0.003;
-            });
-            // CIRCULOS
+                app.stage.addChild(circle1);
+                app.stage.addChild(circle2);
+
+                app.ticker.add(() => {
+                    circle1.rotation += 0.0015;
+                    circle2.rotation -= 0.003;
+                });
+                // CIRCULOS
+            }
+            circulos();
+
+            function apagandoTudo() {
+                while (app.stage.children[0]) {
+                    app.stage.removeChild(app.stage.children[0])
+                }
+            }
 
             // Setando as imagens dos botões
+            const textureNone = PIXI.Texture.from('./img/none.png');
             const textureButton0 = PIXI.Texture.from('./img/pedra.png');
             const textureButton1 = PIXI.Texture.from('./img/papel.png');
             const textureButton2 = PIXI.Texture.from('./img/tesoura.png');
@@ -189,23 +200,109 @@
                     if (maquina === (i + 1)) {
                         resultText.text = 'Empate';
                         mudançaTema();
+                        ganhandoPerdendo()
                     }
                     else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
                         resultText.text = 'Ganhou';
                         pontos = pontos + 1;
                         pontosText.text = pontos;
                         mudançaTema();
+                        ganhandoPerdendo()
                     }
                     else {
                         resultText.text = 'Perdeu';
                         pontos = pontos - 1;
                         pontosText.text = pontos;
                         mudançaTema();
+                        ganhandoPerdendo()
                     }
+                    teste1()
                 }
+
 
                 app.stage.addChild(button);
                 buttons.push(button);
+
+            }
+
+            // function teste1() {
+            //     if ((pontos >= 5) || (pontos <= -5)) {
+            //     }
+            // }
+
+            function ganhandoPerdendo() {
+                if (pontos >= 5) {
+                    // alert("Ganhou o jogo!");
+                    apagandoTudo()
+                    circulos();
+                    const style = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                        fontSize: 28,
+                        fontWeight: 100,
+                        fill: '#ffffff', // gradient
+                        wordWrap: true,
+                        wordWrapWidth: 440,
+                        lineJoin: 'round',
+                    });
+
+                    const basicText = new PIXI.Text('Parabéns', style);
+                    basicText.anchor.set(0.5);
+                    basicText.x = app.screen.width / 2;
+                    basicText.y = app.screen.height / 2 - 75;
+                    app.stage.addChild(basicText);
+
+
+                    const style2 = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                        fontSize: 18,
+                        fontWeight: 100,
+                        fill: '#ffffff', // gradient
+                        wordWrap: true,
+                        wordWrapWidth: 440,
+                        lineJoin: 'round',
+                    });
+                    const descText = new PIXI.Text('\nVocê ganhou!\n\n Parece que hoje você\n está com sorte', style2);
+                    descText.anchor.set(0.5);
+                    descText.x = app.screen.width / 2;
+                    descText.y = app.screen.height / 2;
+                    app.stage.addChild(descText);
+                }
+                else if (pontos <= -5) {
+                    // alert("Perdeu o jogo!");
+                    apagandoTudo()
+                    circulos();
+                    const style = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                        fontSize: 28,
+                        fontWeight: 100,
+                        fill: '#ffffff', // gradient
+                        wordWrap: true,
+                        wordWrapWidth: 440,
+                        lineJoin: 'round',
+                    });
+
+                    const basicText = new PIXI.Text('Que pena', style);
+                    basicText.anchor.set(0.5);
+                    basicText.x = app.screen.width / 2;
+                    basicText.y = app.screen.height / 2 - 75;
+                    app.stage.addChild(basicText);
+
+
+                    const style2 = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                        fontSize: 18,
+                        fontWeight: 100,
+                        fill: '#ffffff', // gradient
+                        wordWrap: true,
+                        wordWrapWidth: 440,
+                        lineJoin: 'round',
+                    });
+                    const descText = new PIXI.Text('\nVocê perdeu!\n\n Parece que hoje você\n não está com sorte', style2);
+                    descText.anchor.set(0.5);
+                    descText.x = app.screen.width / 2;
+                    descText.y = app.screen.height / 2;
+                    app.stage.addChild(descText);
+                }
             }
 
             resultado = 'Escolha um simbolo';
