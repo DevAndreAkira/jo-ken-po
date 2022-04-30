@@ -44,7 +44,7 @@
 
         @media(max-width: 646px) {
             canvas {
-                width: 100%;
+                width: 100vw;
                 height: 100vh;
                 object-fit: cover;
             }
@@ -106,12 +106,9 @@
             function init() {
                 const style = new PIXI.TextStyle({
                     fontFamily: 'Share Tech Mono',
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: 100,
                     fill: '#ffffff', // gradient
-                    wordWrap: true,
-                    wordWrapWidth: 440,
-                    lineJoin: 'round',
                 });
 
                 const basicText = new PIXI.Text('Arcane soul', style);
@@ -240,9 +237,6 @@
                         fontSize: 28,
                         fontWeight: 100,
                         fill: '#ffffff', // gradient
-                        wordWrap: true,
-                        wordWrapWidth: 440,
-                        lineJoin: 'round',
                     });
 
                     const basicText = new PIXI.Text('Parabéns', style);
@@ -257,9 +251,6 @@
                         fontSize: 18,
                         fontWeight: 100,
                         fill: '#ffffff', // gradient
-                        wordWrap: true,
-                        wordWrapWidth: 440,
-                        lineJoin: 'round',
                     });
                     const descText = new PIXI.Text('\nVocê ganhou!\n\n Parece que hoje você\n está com sorte', style2);
                     descText.anchor.set(0.5);
@@ -276,9 +267,7 @@
                         fontSize: 28,
                         fontWeight: 100,
                         fill: '#ffffff', // gradient
-                        wordWrap: true,
-                        wordWrapWidth: 440,
-                        lineJoin: 'round',
+
                     });
 
                     const basicText = new PIXI.Text('Que pena', style);
@@ -293,9 +282,6 @@
                         fontSize: 18,
                         fontWeight: 100,
                         fill: '#ffffff', // gradient
-                        wordWrap: true,
-                        wordWrapWidth: 440,
-                        lineJoin: 'round',
                     });
                     const descText = new PIXI.Text('\nVocê perdeu!\n\n Parece que hoje você\n não está com sorte', style2);
                     descText.anchor.set(0.5);
