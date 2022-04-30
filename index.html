@@ -214,7 +214,6 @@
                         mudançaTema();
                         ganhandoPerdendo()
                     }
-                    teste1()
                 }
 
 
@@ -222,11 +221,6 @@
                 buttons.push(button);
 
             }
-
-            // function teste1() {
-            //     if ((pontos >= 5) || (pontos <= -5)) {
-            //     }
-            // }
 
             function ganhandoPerdendo() {
                 if (pontos >= 5) {
@@ -254,11 +248,26 @@
                         fill: '#ffffff', // gradient
 
                     });
-                    const descText = new PIXI.Text('\nVocê ganhou!\n\n Parece que hoje você\n está com sorte', style2);
+                    const descText = new PIXI.Text('Parece que hoje você\nestá com sorte', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2;
                     app.stage.addChild(descText);
+
+                    const tryText = new PIXI.Text('Tentar novamente', style2);
+                    tryText.anchor.set(0.5);
+                    tryText.x = app.screen.width / 2;
+                    tryText.y = app.screen.height / 2 + 100;
+
+                    tryText.interactive = true;
+                    tryText.buttonMode = true;
+                    tryText.on('pointerdown', onClick);
+
+                    function onClick() {
+                        window.location.reload();
+                    }
+
+                    app.stage.addChild(tryText);
                 }
                 else if (pontos <= -5) {
                     // alert("Perdeu o jogo!");
@@ -286,11 +295,27 @@
                         fill: '#ffffff', // gradient
 
                     });
-                    const descText = new PIXI.Text('\nVocê perdeu!\n\n Parece que hoje você\n não está com sorte', style2);
+                    const descText = new PIXI.Text('Parece que hoje você\nnão está com sorte', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2;
                     app.stage.addChild(descText);
+
+                    const tryText = new PIXI.Text('Tentar novamente', style2);
+                    tryText.anchor.set(0.5);
+                    tryText.x = app.screen.width / 2;
+                    tryText.y = app.screen.height / 2 + 100;
+
+                    tryText.interactive = true;
+                    tryText.buttonMode = true;
+                    tryText.on('pointerdown', onClick);
+
+                    function onClick() {
+                        window.location.reload();
+                    }
+
+                    app.stage.addChild(tryText);
+
                 }
             }
 
