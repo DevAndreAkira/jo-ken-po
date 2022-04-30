@@ -57,7 +57,7 @@
         let app;
 
         window.onload = function () {
-            if (innerWidth >= 767) {
+            // if (innerWidth >= 767) {
                 app = new PIXI.Application(
                     {
                         width: 1280,
@@ -65,17 +65,17 @@
                         backgroundColor: 0x000000
                     }
                 );
-            }
-            else {
+            // }
+            // else {
 
-                app = new PIXI.Application(
-                    {
-                        width: 300,
-                        height: 600,
-                        backgroundColor: 0x000000
-                    }
-                );
-            }
+            //     app = new PIXI.Application(
+            //         {
+            //             width: 300,
+            //             height: 600,
+            //             backgroundColor: 0x000000
+            //         }
+            //     );
+            // }
 
             document.body.appendChild(app.view);
 
