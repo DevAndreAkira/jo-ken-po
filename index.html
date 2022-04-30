@@ -123,6 +123,7 @@
             }
             // Texto
 
+            // MUDANDO TEMA
             function mudançaTema() {
                 if (pontos < 0) {
                     document.body.style.transition = '.5s';
@@ -133,27 +134,28 @@
                     document.body.style.filter = 'hue-rotate(0deg)';
                 }
             }
+            // MUDANDO TEMA
 
-            // Teste circulo
-            const bunny = PIXI.Sprite.from('./img/circle1.png');
-            const bunny2 = PIXI.Sprite.from('./img/circle2.png');
+            // CIRCULOS
+            const circle1 = PIXI.Sprite.from('./img/circle1.png');
+            const circle2 = PIXI.Sprite.from('./img/circle2.png');
 
-            bunny.anchor.set(0.5);
-            bunny2.anchor.set(0.5);
+            circle1.anchor.set(0.5);
+            circle2.anchor.set(0.5);
 
-            bunny.x = app.screen.width / 2;
-            bunny.y = app.screen.height / 2;
-            bunny2.x = app.screen.width / 2;
-            bunny2.y = app.screen.height / 2;
+            circle1.x = app.screen.width / 2;
+            circle1.y = app.screen.height / 2;
+            circle2.x = app.screen.width / 2;
+            circle2.y = app.screen.height / 2;
 
-            app.stage.addChild(bunny);
-            app.stage.addChild(bunny2);
+            app.stage.addChild(circle1);
+            app.stage.addChild(circle2);
 
             app.ticker.add(() => {
-                bunny.rotation += 0.0015;
-                bunny2.rotation -= 0.003;
+                circle1.rotation += 0.0015;
+                circle2.rotation -= 0.003;
             });
-            // Teste circulo
+            // CIRCULOS
 
             // Setando as imagens dos botões
             const textureButton0 = PIXI.Texture.from('./img/pedra.png');
@@ -242,7 +244,7 @@
             // TEXTO RESULTADO
             resultado = 'Escolha um simbolo';
 
-            function init2() {
+            // function init2() {
 
                 const resultText = new PIXI.Text(resultado, {
                     fontFamily: 'Share Tech Mono',
@@ -256,9 +258,7 @@
                 resultText.y = app.screen.height / 2 + 75;
 
                 app.stage.addChild(resultText);
-            }
-
-            // MUDANDO CENARIO
+            // }
         }
     </script>
 </head>
