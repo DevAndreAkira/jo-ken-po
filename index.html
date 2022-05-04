@@ -51,7 +51,7 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="shortcut icon" href="./img/papel.webp" type="image/x-icon">
 
-    <title>Arcane 5</title>
+    <title>Arcana</title>
 
     <style>
         * {
@@ -73,12 +73,6 @@
             /* width: 100%; */
             height: 100vh;
             object-fit: cover;
-        }
-
-        @media(max-width: 646px) {
-            canvas {
-                /* object-fit: cover; */
-            }
         }
     </style>
     <script src="./js/pixi.min.js"></script>
@@ -180,6 +174,8 @@
                 // SOM
                 const soundClick = PIXI.sound.Sound.from('./sound/Cursor1.ogg');
                 soundClick.volume = 0.25;
+                const Sinking = PIXI.sound.Sound.from('./sound/228429_Sinking_Weightlessb.mp3');
+                Sinking.volume = 0.25;
 
                 const basicText = new PIXI.Text('Começar', style);
                 basicText.anchor.set(0.5);
@@ -187,71 +183,128 @@
                 basicText.y = app.screen.height / 2;
                 basicText.interactive = true;
                 basicText.buttonMode = true;
-                basicText.on('pointerdown', onClickStart);
-
+                basicText.on('pointerdown', onClickIntro);
+                // TweenMax.to(basicText, 2.0, { alpha: 0.002, repeat: -1, yoyo: true });
 
                 // CLIQUE
-                let cap = 1;
-                function onClickStart() {
-                    if(cap === 1){
-                        // CAPÍTULO 1
-                        soundClick.play();
-                        basicText.style.fill = 'white';
+                let eventIntro = 1;
+                function onClickIntro() {
+                    basicText.interactive = false;
+                    soundClick.play();
+                    if (eventIntro === 1) {
                         textoFade(basicText, 'out');
-                        setTimeout(myFunction, 1000)
+                        textoFade(circle1, 'out');
+                        textoFade(circle2, 'out');
+                        setTimeout(myFunction, 3000)
                         function myFunction() {
                             textoFade(basicText, 'in', "Cuidado\n\nO conteúdo a seguir pode ser contra\nindicado para menores de 18 anos", 14, 0, 0);
+                            setTimeout(myFunction1, 3000)
+                            function myFunction1() {
+                                textoFade(basicText, 'out');
+                                setTimeout(myFunction2, 3000)
+                                function myFunction2() {
+                                    textoFade(basicText, 'in', "Criado por DevAndreAkira", 14, 0, 0);
+                                    setTimeout(myFunction3, 3000)
+                                    function myFunction3() {
+                                        textoFade(basicText, 'out');
+                                        // textoFade(basicText, 'in', "Criado por DevAndreAkira", 14, 0, 0);
+                                        app.stage.removeChild(basicText);
+                                        // Sinking.play();
+                                        // localStorage.setItem("teste", '1');
+                                        // COLOCAR AQUI A FUNÇAO
+                                    }
+                                }
+                            }
                         }
-                        cap = cap + 1;
                     }
-                    else if(cap === 2){
-                        alert("Funcionou");
-                    }
+                    // if (eventIntro === 2) {
+                    //     alert("Teste");
+                    //     // setTimeout(myFunction1, 3000)
+                    //     // function myFunction1() {
+                    //     //     textoFade(basicText, 'out');
+                    //     //     textoFade(basicText, 'in', "Criado por DevAndreAkira", 14, 0, 0);
+                    //     // }
+                    // }
+                    // if (eventIntro === 3) {
+                    //     // textoFade(basicText, 'out');
+                    //     // setTimeout(myFunction, 1000);
+                    //     // function myFunction() {
+                    //     //     app.stage.removeChild(basicText);
+                    //     // }
+                    // }
                 }
-                    
-
-                // function setadorTempo() {
-                //     setTimeout(myFunction, 1000)
-                //     function myFunction(exec) {
-                //         exec;
-                //     }
-                // }
-
 
                 // CRIANDO TEXTO FADE
-                function textoFade(objTexto, fade, textoIn, tamanho, w, h) {
+                function textoFade(basicText, fade, textoIn, tamanho, w, h) {
                     if (fade === 'in') {
-                        a = 0
                         fade = 1;
-                        const objTexto = new PIXI.Text(textoIn, {
-                            fontFamily: 'Share Tech Mono',
-                            fontSize: (tamanho === '') ? 28 : tamanho,
-                            fontWeight: '500',
-                            fill: '#ffffff',
-                        });
-                        objTexto.anchor.set(0.5);
-                        objTexto.alpha = 0
-                        objTexto.x = app.screen.width / 2 + w;
-                        objTexto.y = app.screen.height / 2 + h;
-                        objTexto.interactive = true;
-                        objTexto.buttonMode = true;
-                        objTexto.on('pointerdown', onClickStart);
-                        app.stage.addChild(objTexto);
-                        TweenMax.to(objTexto, 1.0, { alpha: fade, repeat: 0, yoyo: false });
+                        basicText.style.fontSize = tamanho;
+                        basicText.style.align = 'center';
+                        basicText.text = textoIn;
+                        basicText.anchor.set(0.5);
+                        basicText.alpha = 0
+                        basicText.x = app.screen.width / 2 + w;
+                        basicText.y = app.screen.height / 2 + h;
+                        TweenMax.to(basicText, 3.0, { alpha: fade, repeat: 0, yoyo: false });
                     }
-                    else {
+                    else if (fade === 'out') {
                         fade = 0;
-                        TweenMax.to(objTexto, 1.0, { alpha: fade, repeat: 0, yoyo: false });
-                        setTimeout(myFunction, 1000)
-                        function myFunction() {
-                            app.stage.removeChild(objTexto);
-                        }
+                        TweenMax.to(basicText, 3.0, { alpha: fade, repeat: 0, yoyo: false });
                     }
                 }
-
-
                 app.stage.addChild(basicText);
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //     // CRIANDO TEXTO FADE
+            //     function textoFade(objTexto, fade, textoIn, tamanho, w, h) {
+            //         if (fade === 'in') {
+            //             fade = 1;
+            //             const objTexto = new PIXI.Text(textoIn, {
+            //                 fontFamily: 'Share Tech Mono',
+            //                 fontSize: (tamanho === '') ? 28 : tamanho,
+            //                 fontWeight: '500',
+            //                 fill: '#ffffff',
+            //             });
+            //             objTexto.anchor.set(0.5);
+            //             objTexto.alpha = 0
+            //             objTexto.x = app.screen.width / 2 + w;
+            //             objTexto.y = app.screen.height / 2 + h;
+            //             objTexto.interactive = true;
+            //             objTexto.buttonMode = true;
+            //             objTexto.on('pointerdown', onClickStart);
+            //             app.stage.addChild(objTexto);
+            //             TweenMax.to(objTexto, 1.0, { alpha: fade, repeat: 0, yoyo: false });
+            //         }
+            //         else if (fade === 'out') {
+            //             fade = 0;
+            //             TweenMax.to(objTexto, 1.0, { alpha: fade, repeat: 0, yoyo: false });
+            //             setTimeout(myFunction, 1000);
+            //             function myFunction() {
+            //                 app.stage.removeChild(objTexto);
+            //             }
+            //         }
+            //     }
+
+
+            //     app.stage.addChild(basicText);
+            // }
             // Texto
 
 
