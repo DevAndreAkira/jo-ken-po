@@ -166,7 +166,7 @@ window.onload = function () {
                     // document.body.style.transition = '.5s';
                     // document.body.style.filter = 'hue-rotate(0deg)';
                     ganhandoPerdendo()
-                    gsap.to(rat, {
+                    gsap.to(monster, {
                         y: app.screen.height / 2 - 75, duration: 0.1, repeat: 1, yoyo: true,
                     });
                 }
@@ -190,7 +190,7 @@ window.onload = function () {
                     // document.body.style.transition = '.5s';
                     // document.body.style.filter = 'hue-rotate(130deg)';
                     ganhandoPerdendo();
-                    gsap.to(rat, {
+                    gsap.to(monster, {
                         y: app.screen.height / 2 - 20, duration: 0.1, repeat: 1, yoyo: true,
                     });
                 }
