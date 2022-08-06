@@ -20,7 +20,6 @@
     <meta name="twitter:title" content="Arnane 5">
     <meta name="twitter:description" content="Arcane 5 - Jogo de jo-ken-po, experimentação com PixiJS - André Akira">
     <meta name="twitter:image" content="https://devandreakira.github.io/jo-ken-po/img/tela.png">
-
     <meta name="msapplication-config" content="browserconfig.xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +28,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
+
     <!-- Favicon -->
     <meta name="msapplication-TileImage" content="./img/papel.webp"> <!-- Windows 8 -->
     <meta name="msapplication-TileColor" content="#000000" /> <!-- Windows 8 color -->
@@ -69,27 +69,13 @@
         }
 
         canvas {
-            /* width: 100%; */
             height: 100vh;
             object-fit: cover;
         }
-
-        @media(max-width: 646px) {
-            canvas {
-                /* object-fit: cover; */
-            }
-        }
     </style>
     <script src="./js/pixi.min.js"></script>
-    <!-- <script src="./js/pixi.js"></script> -->
 
     <script>
-        // // Use the native window resolution as the default resolution
-        // // will support high-density displays when rendering
-        // PIXI.settings.RESOLUTION = window.devicePixelRatio;
-
-        // // Disable interpolation when scaling, will make texture be pixelated
-        // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         PIXI.settings.RESOLUTION = 3;
 
         let app;
@@ -118,9 +104,16 @@
 
             document.body.appendChild(app.view);
 
-            let pontos = 0;
+            let arrayAnimation = ['anima0.png', 'anima1.png', 'anima2.png', 'anima3.png']
 
-            // Texto
+            let pontos = 10;
+            let maxPontos = pontos;
+            let pontosMonstro = 5;
+            let maxPontosMonstro = pontosMonstro;
+
+            const containerEffect = new PIXI.Container();
+            app.stage.addChild(containerEffect);
+
             window.WebFontConfig = {
                 google: {
                     families: ['Share Tech Mono'],
@@ -128,7 +121,6 @@
 
                 active() {
                     init();
-                    init2();
                 },
             };
 
@@ -149,28 +141,15 @@
                     fontWeight: '500',
                     fill: '#ffffff'
                 });
-
-                const basicText = new PIXI.Text('Arcane 5', style);
-                basicText.anchor.set(0.5);
-                basicText.x = app.screen.width / 2;
-                basicText.y = app.screen.height / 2 - 75;
-
-                app.stage.addChild(basicText);
             }
-            // Texto
 
-            // MUDANDO TEMA
-            function mudançaTema() {
-                if (pontos < 0) {
-                    document.body.style.transition = '.5s';
-                    document.body.style.filter = 'hue-rotate(130deg)';
-                }
-                else if (pontos >= 0) {
-                    document.body.style.transition = '.5s';
-                    document.body.style.filter = 'hue-rotate(0deg)';
-                }
-            }
-            // MUDANDO TEMA
+            // ? SOUND
+            const Slash1 = PIXI.sound.Sound.from('./sound/Slash1.ogg');
+            Slash1.volume = 0.02;
+            const Evasion1 = PIXI.sound.Sound.from('./sound/Evasion1.ogg');
+            Evasion1.volume = 0.02;
+            const Slash5 = PIXI.sound.Sound.from('./sound/Slash5.ogg');
+            Slash5.volume = 0.02;
 
             // CIRCULOS
             function circulos() {
@@ -194,8 +173,13 @@
                     circle2.rotation -= 0.003;
                 });
             }
-            // CIRCULOS
             circulos();
+
+            const rat = PIXI.Sprite.from('./img/enemy/Rat.png');
+            rat.anchor.set(0.5);
+            rat.x = app.screen.width / 2;
+            rat.y = app.screen.height / 2 - 50;
+            app.stage.addChild(rat);
 
             function apagandoTudo() {
                 while (app.stage.children[0]) {
@@ -203,64 +187,88 @@
                 }
             }
 
-            // Setando as imagens dos botões
+            function animacao() {
+                arrayAnimation.forEach((e, i) => {
+                    const anima = PIXI.Sprite.from(`./img/animation/${arrayAnimation[i]}`);
+                    // const anima = PIXI.Sprite.from(`./img/animation/anima0.png`);
+                    anima.anchor.set(0.5);
+                    anima.x = app.screen.width / 2;
+                    anima.y = app.screen.height / 2 - 50;
+                    app.stage.addChild(anima);
+                    setTimeout(() => {
+                        app.stage.removeChild(anima);
+                    }, 100)
+                })
+            }
+
             const textureNone = PIXI.Texture.from('./img/none.png');
             const textureButton0 = PIXI.Texture.from('./img/pedra.png');
             const textureButton1 = PIXI.Texture.from('./img/papel.png');
             const textureButton2 = PIXI.Texture.from('./img/tesoura.png');
             const array = [textureButton0, textureButton1, textureButton2];
-
             const buttons = [];
 
             const buttonPositions = [
-                app.screen.width / 2 - 100, app.screen.height / 2,
-                app.screen.width / 2, app.screen.height / 2,
-                app.screen.width / 2 + 100, app.screen.height / 2,
+                app.screen.width / 2 - 75, app.screen.height / 2 + 75,
+                app.screen.width / 2, app.screen.height / 2 + 75,
+                app.screen.width / 2 + 75, app.screen.height / 2 + 75,
             ];
 
             for (let i = 0; i < 3; i++) {
                 const button = new PIXI.Sprite(array[i]);
-
                 button.anchor.set(0.5);
                 button.x = buttonPositions[i * 2];
                 button.y = buttonPositions[i * 2 + 1];
                 button.interactive = true;
                 button.buttonMode = true;
-
                 button.on('pointerdown', onButtonUp)
 
                 function onButtonUp() {
                     let maquina = Math.floor(Math.random() * (3)) + 1;
-                    // alert("Você escolheu " + (i === 0 ? "pedra" : (i === 1 ? "papel" : (i === 2 ? "tesoura" : ''))));
-                    // alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
                     if (maquina === (i + 1)) {
-                        resultText.text = 'Empate';
-                        mudançaTema();
+                        Evasion1.play();
+                        resultText.text = 'Esquivou!';
+                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos;
+                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        // document.body.style.transition = '.5s';
+                        // document.body.style.filter = 'hue-rotate(0deg)';
                         ganhandoPerdendo()
+                        gsap.to(rat, {
+                            y: app.screen.height / 2 - 75, duration: 0.1, repeat: 1, yoyo: true,
+                        });
                     }
                     else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
-                        resultText.text = 'Ganhou';
-                        pontos = pontos + 1;
-                        pontosText.text = pontos;
-                        mudançaTema();
+                        Slash1.play();
+                        resultText.text = 'Você ataca!';
+                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos;
+                        pontosMonstro = pontosMonstro - 1;
+                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        // document.body.style.transition = '.5s';
+                        // document.body.style.filter = 'hue-rotate(0deg)';
                         ganhandoPerdendo()
+                        animacao();
                     }
                     else {
-                        resultText.text = 'Perdeu';
+                        Slash5.play();
+                        resultText.text = 'Recebe dano!';
                         pontos = pontos - 1;
-                        pontosText.text = pontos;
-                        mudançaTema();
-                        ganhandoPerdendo()
+                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos;
+                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        // document.body.style.transition = '.5s';
+                        // document.body.style.filter = 'hue-rotate(130deg)';
+                        ganhandoPerdendo();
+                        gsap.to(rat, {
+                            y: app.screen.height / 2 - 20, duration: 0.1, repeat: 1, yoyo: true,
+                        });
                     }
                 }
-
                 app.stage.addChild(button);
                 buttons.push(button);
 
             }
 
             function ganhandoPerdendo() {
-                if (pontos >= 5) {
+                if (pontosMonstro <= 0) {
                     // alert("Ganhou o jogo!");
                     apagandoTudo()
                     circulos();
@@ -277,15 +285,14 @@
                     basicText.y = app.screen.height / 2 - 75;
                     app.stage.addChild(basicText);
 
-
                     const style2 = new PIXI.TextStyle({
                         fontFamily: 'Share Tech Mono',
                         fontSize: 18,
                         fontWeight: 500,
                         fill: '#ffffff', // gradient
-
+                        align: 'center',
                     });
-                    const descText = new PIXI.Text('Parece que hoje você\nestá com sorte', style2);
+                    const descText = new PIXI.Text('Você derrotou o monstro!\n\n +20 EXP', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2;
@@ -303,10 +310,9 @@
                     function onClick() {
                         window.location.reload();
                     }
-
                     app.stage.addChild(tryText);
                 }
-                else if (pontos <= -5) {
+                else if (pontos <= 0) {
                     // alert("Perdeu o jogo!");
                     apagandoTudo()
                     circulos();
@@ -315,7 +321,6 @@
                         fontSize: 28,
                         fontWeight: 500,
                         fill: '#ffffff', // gradient
-
                     });
 
                     const basicText = new PIXI.Text('Que pena', style);
@@ -324,7 +329,6 @@
                     basicText.y = app.screen.height / 2 - 75;
                     app.stage.addChild(basicText);
 
-
                     const style2 = new PIXI.TextStyle({
                         fontFamily: 'Share Tech Mono',
                         fontSize: 18,
@@ -332,7 +336,7 @@
                         fill: '#ffffff', // gradient
 
                     });
-                    const descText = new PIXI.Text('Parece que hoje você\nnão está com sorte', style2);
+                    const descText = new PIXI.Text('Parece que hoje você\nfoi derrotado...', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2;
@@ -350,63 +354,45 @@
                     function onClick() {
                         window.location.reload();
                     }
-
                     app.stage.addChild(tryText);
-
                 }
             }
 
             resultado = 'Escolha um simbolo';
 
-            const pontosText = new PIXI.Text(pontos, {
+            const pontosText = new PIXI.Text('HP: ' + pontos + '/' + maxPontos, {
                 fontFamily: 'Share Tech Mono',
                 fontSize: 18,
                 fontWeight: 500,
                 fill: '#ffffff',
             });
-
             pontosText.anchor.set(0.5);
             pontosText.x = app.screen.width / 2;
-            pontosText.y = app.screen.height / 2 + 100;
-
+            pontosText.y = app.screen.height / 2 + 120;
             app.stage.addChild(pontosText);
 
-            // JS Vanilla
-            // buttons.forEach((e, index) => {
-            //     buttons[index].on('click', function () {
-            //         let maquina = Math.floor(Math.random() * (3)) + 1;
-            //         alert("Você escolheu " + (index === 0 ? "pedra" : (index === 1 ? "papel" : (index === 2 ? "tesoura" : ''))));
-            //         alert("A máquina escolheu " + (maquina === 1 ? "pedra" : (maquina === 2 ? "papel" : (maquina === 3 ? "tesoura" : ''))));
-            //         if (maquina === (index + 1)) {
-            //             alert("Empate")
-            //         }
-            //         else if ((index === 0 && maquina === 3) || (index === 1 && maquina === 1) || (index === 2 && maquina === 2)) {
-            //             alert("Ganhou")
-            //         }
-            //         else {
-            //             alert("Perdeu")
-            //         }
-            //     });
-            // })
-
-            // TEXTO RESULTADO
-            resultado = 'Escolha um simbolo';
-
-            // function init2() {
+            const pontosTextMonster = new PIXI.Text('HP: ' + pontosMonstro + '/' + maxPontosMonstro, {
+                fontFamily: 'Share Tech Mono',
+                fontSize: 18,
+                fontWeight: 500,
+                fill: '#ffffff',
+            });
+            pontosTextMonster.anchor.set(0.5);
+            pontosTextMonster.x = app.screen.width / 2;
+            pontosTextMonster.y = app.screen.height / 2 - 120;
+            app.stage.addChild(pontosTextMonster);
 
             const resultText = new PIXI.Text(resultado, {
-                fontFamily: 'Courier',
-                fontSize: 18,
+                fontFamily: 'Share Tech Mono',
+                fontSize: 14,
                 fontWeight: 500,
                 fill: '#ffffff',
             });
 
             resultText.anchor.set(0.5);
             resultText.x = app.screen.width / 2;
-            resultText.y = app.screen.height / 2 + 75;
-
+            resultText.y = app.screen.height / 2 + 20;
             app.stage.addChild(resultText);
-            // }
 
         }
     </script>
@@ -414,6 +400,8 @@
 </head>
 
 <body style="text-align:center">
+    <script src="/js/gsap.min.js"></script>
+    <script src="/js/pixi-sound.js"></script>
 
 </body>
 
