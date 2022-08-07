@@ -85,11 +85,11 @@ window.onload = function () {
 
             // ? BGM
             const lose = PIXI.sound.Sound.from('./sound/cantus_prossequitur.ogg');
-            lose.volume = 0.15;
+            lose.volume = 0.35;
             const win = PIXI.sound.Sound.from('./sound/cantus_noster_prossequitur.ogg');
-            win.volume = 0.15;
+            win.volume = 0.35;
             const battle = PIXI.sound.Sound.from('./sound/base_per.ogg');
-            battle.volume = 0.2;
+            battle.volume = 0.5;
             battle.loop = true;
 
             battle.play();
