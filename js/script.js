@@ -250,7 +250,7 @@ window.onload = function () {
 
 
 
-        // start_game()
+        start_game();
         function start_game() {
             battle.play();
 
