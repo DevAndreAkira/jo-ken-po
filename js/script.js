@@ -32,6 +32,7 @@ window.onload = function () {
     let exp = 0;
     let xpGain = 50;
     // let xpGain = Math.floor(Math.random() * (50)) + 1;
+    let nivel = 1;
 
     window.WebFontConfig = {
         google: {
@@ -54,68 +55,211 @@ window.onload = function () {
     }());
 
     function init() {
-        const style = new PIXI.TextStyle({
-            fontFamily: 'Share Tech Mono',
-            fontSize: 28,
-            fontWeight: '500',
-            fill: '#ffffff'
+        const circle1Intro = PIXI.Sprite.from('./img/circle1.png');
+        const circle2Intro = PIXI.Sprite.from('./img/circle2.png');
+        circle1Intro.anchor.set(0.5);
+        circle2Intro.anchor.set(0.5);
+        circle1Intro.x = app.screen.width / 2;
+        circle1Intro.y = app.screen.height / 2;
+        circle2Intro.x = app.screen.width / 2;
+        circle2Intro.y = app.screen.height / 2;
+        app.stage.addChild(circle1Intro);
+        app.stage.addChild(circle2Intro);
+        app.ticker.add(() => {
+            circle1Intro.rotation += 0.0015;
+            circle2Intro.rotation -= 0.003;
         });
 
+        // ? SOUND EFFECT
+        const Slash1 = PIXI.sound.Sound.from('./sound/Slash1.ogg');
+        Slash1.volume = 0.05;
+        const Evasion1 = PIXI.sound.Sound.from('./sound/Evasion1.ogg');
+        Evasion1.volume = 0.05;
+        const Slash5 = PIXI.sound.Sound.from('./sound/Slash5.ogg');
+        Slash5.volume = 0.05;
+        const soundClick = PIXI.sound.Sound.from('./sound/Cursor1.ogg');
+        soundClick.volume = 0.25;
 
-        voltando()
+        // ? BGM
+        const lose = PIXI.sound.Sound.from('./sound/cantus_prossequitur.ogg');
+        lose.volume = 0.35;
+        const win = PIXI.sound.Sound.from('./sound/cantus_noster_prossequitur.ogg');
+        win.volume = 0.35;
+        const battle = PIXI.sound.Sound.from('./sound/base_per.ogg');
+        battle.volume = 0.5;
+        battle.loop = true;
 
-        function voltando() {
+        //& CIRCULOS
+        function circulos() {
+            const circle1 = PIXI.Sprite.from('./img/circle1.png');
+            const circle2 = PIXI.Sprite.from('./img/circle2.png');
+            circle1.anchor.set(0.5);
+            circle2.anchor.set(0.5);
+            circle1.x = app.screen.width / 2;
+            circle1.y = app.screen.height / 2;
+            circle2.x = app.screen.width / 2;
+            circle2.y = app.screen.height / 2;
+            app.stage.addChild(circle1);
+            app.stage.addChild(circle2);
+            app.ticker.add(() => {
+                circle1.rotation += 0.0015;
+                circle2.rotation -= 0.003;
+            });
+        }
+
+        const circle1 = PIXI.Sprite.from('./img/circle1.png');
+        const circle2 = PIXI.Sprite.from('./img/circle2.png');
+        circle1.anchor.set(0.5);
+        circle2.anchor.set(0.5);
+        circle1.x = app.screen.width / 2;
+        circle1.y = app.screen.height / 2;
+        circle2.x = app.screen.width / 2;
+        circle2.y = app.screen.height / 2;
+
+        const textureButton0I = PIXI.Sprite.from('./img/pedra.png');
+        const textureButton1I = PIXI.Sprite.from('./img/papel.png');
+        const textureButton2I = PIXI.Sprite.from('./img/tesoura.png');
+        textureButton0I.anchor.set(0.5);
+        textureButton1I.anchor.set(0.5);
+        textureButton2I.anchor.set(0.5);
+        textureButton0I.x = app.screen.width / 2 - 75;
+        textureButton0I.y = app.screen.height / 2 + 95;
+        textureButton1I.x = app.screen.width / 2;
+        textureButton1I.y = app.screen.height / 2 + 95;
+        textureButton2I.x = app.screen.width / 2 + 75;
+        textureButton2I.y = app.screen.height / 2 + 95;
+
+
+        // ! ENREDO
+        const textStandart = new PIXI.Text('Circulo Arcano', {
+            fontFamily: 'Share Tech Mono',
+            fontSize: 30,
+            fill: 'white',
+            align: 'center',
+        });
+        textStandart.anchor.set(0.5);
+        textStandart.position.set(app.screen.width / 2, app.screen.height / 2);
+        textStandart.interactive = true;
+        textStandart.buttonMode = true;
+        textStandart.on('pointerdown', onButtonDownIntro);
+        app.stage.addChild(textStandart);
+
+        let eventIntro = 1;
+
+        function onButtonDownIntro() {
+            textStandart.interactive = false;
+
+            if (eventIntro === 1) {
+                soundClick.play();
+                textoFade(textStandart, 'out');
+                textoFade(circle1Intro, 'out');
+                textoFade(circle2Intro, 'out');
+                setTimeout(myFunction, 3000)
+                function myFunction() {
+                    textoFade(textStandart, 'in', "Cuidado\n\nO conteúdo a seguir pode ser contra\nindicado para menores de 18 anos", 14, 0, 0, 'white');
+                    setTimeout(myFunction1, 3000)
+                    function myFunction1() {
+                        textoFade(textStandart, 'out');
+                        setTimeout(myFunction2, 3000)
+                        function myFunction2() {
+                            textoFade(textStandart, 'in', "Criado por DevAndreAkira", 14, 0, 0, 'white');
+                            setTimeout(myFunction3, 5000)
+                            function myFunction3() {
+                                textoFade(textStandart, 'out');
+                                capitulo_intro()
+                                // start_game()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // INTRODUÇÃO
+        function capitulo_intro() {
+            // introSound.play();
+            textoFade(textStandart, 'in', "Se quero ficar sozinho, paro,\ntiro o giz do meu bolso e \ntraço um círculo à minha\nvolta.", 18, 0, 0, 'white');
+            setTimeout(myFunction1, 8000)
+            function myFunction1() {
+                textoFade(textStandart, 'out');
+                setTimeout(myFunction2, 3000)
+                function myFunction2() {
+                    textoFade(textStandart, 'in', "Quando estou dentro do meu\ncírculo, não escuto mais\no barulho da rua,\nas ondas do mar\nou o canto dos passarinhos.", 18, 0, 0, 'white');
+                    setTimeout(myFunction3, 10000)
+                    function myFunction3() {
+                        textoFade(textStandart, 'out');
+                        setTimeout(myFunction4, 3000)
+                        function myFunction4() {
+                            textoFade(textStandart, 'in', "Dentro do círculo não se \nsente mais frio, dor ou fome.\nO tempo, ele também para.\nMergulha-se na abstração como\nnum sonho protetor.\n\nA gente se torna o centro\ndo círculo.", 18, 0, 0, 'white');
+                            setTimeout(myFunction5, 10000)
+                            function myFunction5() {
+                                textoFade(textStandart, 'out');
+                                setTimeout(myFunction6, 3000)
+                                function myFunction6() {
+                                    textoFade(textStandart, 'in', "Desde que o círculo foi\ninventado, o mundo ficou\nmelhor.\n\nNão há guerra, nem fome,\nnem catástrofe.\n\nA criminalidade diminuiu.\n\nÉ só algo nos atingir que\ntraçamos um círculo em\nvolta da gente.", 18, 0, 0, 'white');
+                                    setTimeout(myFunction7, 10000)
+                                    function myFunction7() {
+                                        textoFade(textStandart, 'out');
+                                        setTimeout(myFunction8, 3000)
+                                        function myFunction8() {
+                                            textoFade(textStandart, 'in', "Dizem que os círculos escondem\numa armadilha, que a\ngente entra algumas\nvezes para nunca\nmais sair.\n\nSimplesmente esquecemos\nde nossa existência.", 18, 0, 0, 'white');
+                                            setTimeout(myFunction9, 15000)
+                                            function myFunction9() {
+                                                textoFade(textStandart, 'out');
+                                                setTimeout(myFunction10, 3000)
+                                                function myFunction10() {
+                                                    textoFade(textStandart, 'in', "Parte de mim ainda existe.\n\nCorpo, espírito e alma.\n\nUsarei com sabedoria para\nvencer as armadilhas.", 18, 0, 0, 'white');
+                                                    app.stage.addChild(textureButton0I);
+                                                    app.stage.addChild(textureButton1I);
+                                                    app.stage.addChild(textureButton2I);
+                                                    setTimeout(myFunction11, 8000)
+                                                    function myFunction11() {
+                                                        textoFade(textStandart, 'out');
+                                                        textoFade(textureButton0I, 'out');
+                                                        textoFade(textureButton1I, 'out');
+                                                        textoFade(textureButton2I, 'out');
+                                                        setTimeout(myFunction12, 3000)
+                                                        function myFunction12() {
+                                                            textoFade(textStandart, 'in', "\nParte de mim tenta\nentender como vim\nparar aqui.\n\nE parte de mim deseja sair...", 18, 0, 0, 'white');
+                                                            app.stage.removeChild(textureButton0I);
+                                                            app.stage.removeChild(textureButton1I);
+                                                            app.stage.removeChild(textureButton2I);
+                                                            setTimeout(myFunction13, 3000)
+                                                            function myFunction13() {
+                                                                textoFade(textStandart, 'out');
+                                                            }
+                                                            setTimeout(() => {
+                                                                start_game();
+                                                            }, 10000);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // ! FIM - ENREDO
+
+
+
+
+
+        // start_game()
+        function start_game() {
+            battle.play();
 
             let pontosMonstro = 5;
             let maxPontosMonstro = pontosMonstro;
-
             let pontos = 10;
             let maxPontos = pontos;
-
             const container = new PIXI.Container();
             app.stage.addChild(container);
-
-            // ? SOUND EFFECT
-            const Slash1 = PIXI.sound.Sound.from('./sound/Slash1.ogg');
-            Slash1.volume = 0.05;
-            const Evasion1 = PIXI.sound.Sound.from('./sound/Evasion1.ogg');
-            Evasion1.volume = 0.05;
-            const Slash5 = PIXI.sound.Sound.from('./sound/Slash5.ogg');
-            Slash5.volume = 0.05;
-
-            // ? BGM
-            const lose = PIXI.sound.Sound.from('./sound/cantus_prossequitur.ogg');
-            lose.volume = 0.35;
-            const win = PIXI.sound.Sound.from('./sound/cantus_noster_prossequitur.ogg');
-            win.volume = 0.35;
-            const battle = PIXI.sound.Sound.from('./sound/base_per.ogg');
-            battle.volume = 0.5;
-            battle.loop = true;
-
-            battle.play();
-
-            //CIRCULOS
-            function circulos() {
-
-                const circle1 = PIXI.Sprite.from('./img/circle1.png');
-                const circle2 = PIXI.Sprite.from('./img/circle2.png');
-
-                circle1.anchor.set(0.5);
-                circle2.anchor.set(0.5);
-
-                circle1.x = app.screen.width / 2;
-                circle1.y = app.screen.height / 2;
-                circle2.x = app.screen.width / 2;
-                circle2.y = app.screen.height / 2;
-
-                app.stage.addChild(circle1);
-                app.stage.addChild(circle2);
-
-                app.ticker.add(() => {
-                    circle1.rotation += 0.0015;
-                    circle2.rotation -= 0.003;
-                });
-            }
 
             if (exp === 0) {
                 circulos();
@@ -133,10 +277,10 @@ window.onload = function () {
                 }
             }
 
+            //^ ANIMAÇÃO AO ATACAR
             function animacao() {
                 arrayAnimation.forEach((e, i) => {
                     const anima = PIXI.Sprite.from(`./img/animation/${arrayAnimation[i]}`);
-                    // const anima = PIXI.Sprite.from(`./img/animation/anima0.png`);
                     anima.anchor.set(0.5);
                     anima.x = app.screen.width / 2;
                     anima.y = app.screen.height / 2 - 50;
@@ -200,12 +344,16 @@ window.onload = function () {
                         pontos = pontos - 1;
                         pontosText.text = 'HP: ' + pontos + '/' + maxPontos + '\nEXP: ' + exp;
                         pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
-                        // document.body.style.transition = '.5s';
+                        document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(130deg)';
                         ganhandoPerdendo();
                         gsap.to(monster, {
                             y: app.screen.height / 2 - 20, duration: 0.1, repeat: 1, yoyo: true,
                         });
+                        // setTimeout(() => {
+                        //     document.body.style.transition = '.5s';
+                        //     document.body.style.filter = 'hue-rotate(0deg)';
+                        // }, 300)
                     }
                 }
                 container.addChild(button);
@@ -243,8 +391,17 @@ window.onload = function () {
                     const descText = new PIXI.Text('Você derrotou o monstro!\n\n +' + xpGain + ' EXP', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
-                    descText.y = app.screen.height / 2;
+                    descText.y = app.screen.height / 2 - 20;
                     container.addChild(descText);
+
+                    if (exp >= 50 && nivel === 1) {
+                        nivel = nivel + 1;
+                        const lvlText = new PIXI.Text('Subiu para o nível ' + nivel, style2);
+                        lvlText.anchor.set(0.5);
+                        lvlText.x = app.screen.width / 2;
+                        lvlText.y = app.screen.height / 2 + 25;
+                        container.addChild(lvlText);
+                    }
 
                     const tryText = new PIXI.Text('Continuar →', style2);
                     tryText.anchor.set(0.5);
@@ -262,7 +419,7 @@ window.onload = function () {
                             children: true, texture: true,
                             baseTexture: true
                         });
-                        voltando();
+                        start_game();
                     }
                 }
                 else if (pontos <= 0) {
@@ -352,5 +509,61 @@ window.onload = function () {
             resultText.y = app.screen.height / 2 + 20;
             container.addChild(resultText);
         }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+//TODO FADE BACKGROUND
+function bgFade(fade, tilingSprite) {
+    if (fade === 'in') {
+        fade = 1;
+        tilingSprite.alpha = 0;
+        TweenMax.to(tilingSprite, 3.0, { alpha: fade, repeat: 0, yoyo: false });
+        app.stage.addChild(tilingSprite);
+    }
+    else if (fade === 'out') {
+        fade = 0;
+        TweenMax.to(tilingSprite, 3.0, { alpha: fade, repeat: 0, yoyo: false });
+        setTimeout(() => {
+            app.stage.removeChild(tilingSprite);
+        }, 3000)
+    }
+}
+
+//TODO FUNÇÕES E MECANISMOS
+function textoFade(textSample, fade, textoIn, tamanho, w, h, color) {
+    if (fade === 'in') {
+        fade = 1;
+        if (tamanho !== '') {
+            textSample.style.fontSize = tamanho;
+            textSample.style.align = 'center';
+        }
+        if (color !== '') {
+            textSample.style.fill = color;
+        }
+        if (textoIn !== '') {
+            textSample.text = textoIn;
+        }
+        textSample.anchor.set(0.5);
+        textSample.alpha = 0;
+        if (w !== '') {
+            textSample.x = app.screen.width / 2 + w;
+        }
+        if (h !== '') {
+            textSample.y = app.screen.height / 2 + h;
+        }
+        TweenMax.to(textSample, 3.0, { alpha: fade, repeat: 0, yoyo: false });
+    }
+    else if (fade === 'out') {
+        fade = 0;
+        TweenMax.to(textSample, 3.0, { alpha: fade, repeat: 0, yoyo: false });
     }
 }
