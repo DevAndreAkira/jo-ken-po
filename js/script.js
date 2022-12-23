@@ -9,7 +9,7 @@ window.onload = function () {
             {
                 width: 1280,
                 height: 600,
-                backgroundColor: 0x000000
+                backgroundAlpha: 0
             }
         );
     }
@@ -19,7 +19,7 @@ window.onload = function () {
             {
                 width: 600,
                 height: 600,
-                backgroundColor: 0x000000
+                backgroundAlpha: 0
             }
         );
     }
@@ -31,7 +31,7 @@ window.onload = function () {
 
     let upou = false;
     let exp = 0;
-    let xpGain = 50;
+    let xpGain = 25;
     // let xpGain = Math.floor(Math.random() * (50)) + 1;
     let nivel = 1;
 
@@ -115,33 +115,31 @@ window.onload = function () {
         battle.loop = true;
 
         //& CIRCULOS
-        function circulos1() {
-            const circle1 = PIXI.Sprite.from('./img/circle1.png');
-            circle1.anchor.set(0.5);
-            circle1.x = app.screen.width / 2;
-            circle1.y = app.screen.height / 2;
-            app.stage.addChild(circle1);
-            app.ticker.add(() => {
-                circle1.rotation += 0.0015;
-            });
-        }
 
-        function circulos2() {
-            const circle1 = PIXI.Sprite.from('./img/circle1.png');
-            const circle2 = PIXI.Sprite.from('./img/circle2.png');
-            circle1.anchor.set(0.5);
-            circle2.anchor.set(0.5);
-            circle1.x = app.screen.width / 2;
-            circle1.y = app.screen.height / 2;
-            circle2.x = app.screen.width / 2;
-            circle2.y = app.screen.height / 2;
-            app.stage.addChild(circle1);
-            app.stage.addChild(circle2);
-            app.ticker.add(() => {
-                circle1.rotation += 0.0015;
-                circle2.rotation -= 0.003;
-            });
-        }
+        // function circulos1() {
+        //     circle1.anchor.set(0.5);
+        //     circle1.x = app.screen.width / 2;
+        //     circle1.y = app.screen.height / 2;
+        //     app.stage.addChild(circle1);
+        //     app.ticker.add(() => {
+        //         circle1.rotation += 0.0015;
+        //     });
+        // }
+
+        // function circulos2() {
+        //     circle1.anchor.set(0.5);
+        //     circle2.anchor.set(0.5);
+        //     circle1.x = app.screen.width / 2;
+        //     circle1.y = app.screen.height / 2;
+        //     circle2.x = app.screen.width / 2;
+        //     circle2.y = app.screen.height / 2;
+        //     app.stage.addChild(circle1);
+        //     app.stage.addChild(circle2);
+        //     app.ticker.add(() => {
+        //         circle1.rotation += 0.0015;
+        //         circle2.rotation -= 0.003;
+        //     });
+        // }
 
         const textureButton0I = PIXI.Sprite.from('./img/pedra.png');
         const textureButton1I = PIXI.Sprite.from('./img/papel.png');
@@ -216,6 +214,8 @@ window.onload = function () {
 
         // start_game();
         function start_game() {
+            const circle1 = PIXI.Sprite.from('./img/circle1.png');
+            const circle2 = PIXI.Sprite.from('./img/circle2.png');
 
             let statusMonstro = {
                 atk: (1 * nivel),
@@ -233,10 +233,17 @@ window.onload = function () {
 
             if (exp === 0) {
                 if (localStorage.getItem("key") == 1) {
-                    circulos1();
+                    circle1.anchor.set(0.5);
+                    circle1.x = app.screen.width / 2;
+                    circle1.y = app.screen.height / 2;
+                    app.stage.addChild(circle1);
+                    app.ticker.add(() => {
+                        circle1.rotation += 0.0015;
+                    });
                 }
                 else if (localStorage.getItem("key") == 2) {
-                    circulos2();
+                    textoFade(circle1Intro, 'in', '', '', '', '', '');
+                    textoFade(circle2Intro, 'in', '', '', '', '', '');
                 }
             }
 
@@ -251,22 +258,6 @@ window.onload = function () {
                     container.removeChild(container.children[0])
                 }
             }
-
-            // function aprimoramento() {
-            //     if (apromora1 > apromora2 && apromora1 > apromora3) {
-            //         status.atk = status.atk + 1;
-            //     }
-            //     else if (apromora2 > apromora1 && apromora2 > apromora3) {
-            //         status.maxHp = status.maxHp + 5;
-            //     }
-            //     else if (apromora3 > apromora1 && apromora3 > apromora2) {
-            //         xpGain = xpGain + 50;
-            //     }
-
-            //     apromora1 = 0;
-            //     apromora2 = 0;
-            //     apromora3 = 0;
-            // }
 
             //^ ANIMAÇÃO AO ATACAR
             function animacao() {
@@ -305,15 +296,6 @@ window.onload = function () {
                 button.on('pointerdown', onButtonUp)
 
                 function onButtonUp() {
-                    // if (i === 0) {
-                    //     apromora1 = apromora1 + 1;
-                    // }
-                    // else if (i === 1) {
-                    //     apromora2 = apromora2 + 1;
-                    // }
-                    // else if (i === 2) {
-                    //     apromora3 = apromora3 + 1;
-                    // }
                     let maquina = Math.floor(Math.random() * (3)) + 1;
                     if (maquina === (i + 1)) {
                         Evasion1.play();
@@ -322,7 +304,7 @@ window.onload = function () {
                         pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         // document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(0deg)';
-                        ganhandoPerdendo()
+                        ganhandoPerdendo();
                         gsap.to(monster, {
                             y: app.screen.height / 2 - 75, duration: 0.1, repeat: 1, yoyo: true,
                         });
@@ -365,7 +347,6 @@ window.onload = function () {
                     battle.stop();
                     win.play();
                     exp = exp + xpGain;
-                    // alert("Ganhou o jogo!");
                     apagandoTudo()
                     const style = new PIXI.TextStyle({
                         fontFamily: 'Share Tech Mono',
@@ -481,7 +462,6 @@ window.onload = function () {
                         tryText.anchor.set(0.5);
                         tryText.x = app.screen.width / 2;
                         tryText.y = app.screen.height / 2 + 120;
-
                         tryText.interactive = true;
                         tryText.buttonMode = true;
                         tryText.on('pointerdown', onClick);
@@ -490,11 +470,21 @@ window.onload = function () {
                             if (nivel === 5) {
                                 if (localStorage.getItem("key") == 1) {
                                     localStorage.setItem("key", 2)
+                                    window.location.reload();
+                                }
+                                else if (localStorage.getItem("key") == 2) {
+                                    textoFade(circle1Intro, 'out');
+                                    textoFade(circle2Intro, 'out');
+                                    document.querySelector("body").style.background = "white";
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 10000)
+
                                 }
                                 else {
                                     localStorage.setItem("key", 1);
+                                    window.location.reload();
                                 }
-                                window.location.reload();
                             }
                             else {
                                 win.stop();
@@ -506,7 +496,6 @@ window.onload = function () {
                             }
                         }
                     }
-                    // aprimoramento();
                 }
                 else if (status.hp <= 0) {
                     battle.stop();
