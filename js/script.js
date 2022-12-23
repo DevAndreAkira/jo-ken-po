@@ -29,10 +29,17 @@ window.onload = function () {
     let arrayAnimation = ['anima0.png', 'anima1.png', 'anima2.png', 'anima3.png'];
     let arrayMonsters = ['Rat.png', 'Slime.png', 'Hornet.png', 'Imp.png', 'Scorpion.png', 'Spider.png'];
 
+    let upou = false;
     let exp = 0;
-    let xpGain = 50;
+    let xpGain = 500;
     // let xpGain = Math.floor(Math.random() * (50)) + 1;
     let nivel = 1;
+    let status = {
+        atk: 1,
+        maxHp: 10,
+        hp: 10,
+        potion: 0,
+    }
 
     window.WebFontConfig = {
         google: {
@@ -130,134 +137,72 @@ window.onload = function () {
         textureButton2I.y = app.screen.height / 2 + 95;
 
 
-        // ! ENREDO
-        // const textStandart = new PIXI.Text('Circulo Arcano', {
-        //     fontFamily: 'Share Tech Mono',
-        //     fontSize: 30,
-        //     fill: 'white',
-        //     align: 'center',
-        // });
-        // textStandart.anchor.set(0.5);
-        // textStandart.position.set(app.screen.width / 2, app.screen.height / 2);
-        // textStandart.interactive = true;
-        // textStandart.buttonMode = true;
-        // textStandart.on('pointerdown', onButtonDownIntro);
-        // app.stage.addChild(textStandart);
+        // // ! ENREDO
+        const textStandart = new PIXI.Text('Começar', {
+            fontFamily: 'Share Tech Mono',
+            fontSize: 30,
+            fill: 'white',
+            align: 'center',
+        });
+        textStandart.anchor.set(0.5);
+        textStandart.position.set(app.screen.width / 2, app.screen.height / 2);
+        textStandart.interactive = true;
+        textStandart.buttonMode = true;
+        textStandart.on('pointerdown', onButtonDownIntro);
+        app.stage.addChild(textStandart);
 
-        // let eventIntro = 1;
+        let eventIntro = 1;
 
-        // function onButtonDownIntro() {
-        //     textStandart.interactive = false;
+        function onButtonDownIntro() {
+            textStandart.interactive = false;
 
-        //     if (eventIntro === 1) {
-        //         soundClick.play();
-        //         textoFade(textStandart, 'out');
-        //         textoFade(circle1Intro, 'out');
-        //         textoFade(circle2Intro, 'out');
-        //         setTimeout(myFunction, 3000)
-        //         function myFunction() {
-        //             textoFade(textStandart, 'in', "Cuidado\n\nO conteúdo a seguir pode ser contra\nindicado para menores de 18 anos", 14, 0, 0, 'white');
-        //             setTimeout(myFunction1, 3000)
-        //             function myFunction1() {
-        //                 textoFade(textStandart, 'out');
-        //                 setTimeout(myFunction2, 3000)
-        //                 function myFunction2() {
-        //                     textoFade(textStandart, 'in', "Criado por DevAndreAkira", 14, 0, 0, 'white');
-        //                     setTimeout(myFunction3, 5000)
-        //                     function myFunction3() {
-        //                         textoFade(textStandart, 'out');
-        //                         capitulo_intro()
-        //                         // start_game()
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+            if (eventIntro === 1) {
+                soundClick.play();
+                textoFade(textStandart, 'out');
+                textoFade(circle1Intro, 'out');
+                textoFade(circle2Intro, 'out');
+                setTimeout(myFunction, 1000)
+                function myFunction() {
+                    capitulo_intro()
+                }
+            }
+        }
 
-        // // INTRODUÇÃO
-        // function capitulo_intro() {
-        //     // introSound.play();
-        //     textoFade(textStandart, 'in', "Se quero ficar sozinho, paro,\ntiro o giz do meu bolso e \ntraço um círculo à minha\nvolta.", 18, 0, 0, 'white');
-        //     setTimeout(myFunction1, 8000)
-        //     function myFunction1() {
-        //         textoFade(textStandart, 'out');
-        //         setTimeout(myFunction2, 3000)
-        //         function myFunction2() {
-        //             textoFade(textStandart, 'in', "Quando estou dentro do meu\ncírculo, não escuto mais\no barulho da rua,\nas ondas do mar\nou o canto dos passarinhos.", 18, 0, 0, 'white');
-        //             setTimeout(myFunction3, 10000)
-        //             function myFunction3() {
-        //                 textoFade(textStandart, 'out');
-        //                 setTimeout(myFunction4, 3000)
-        //                 function myFunction4() {
-        //                     textoFade(textStandart, 'in', "Dentro do círculo não se \nsente mais frio, dor ou fome.\nO tempo, ele também para.\nMergulha-se na abstração como\nnum sonho protetor.\n\nA gente se torna o centro\ndo círculo.", 18, 0, 0, 'white');
-        //                     setTimeout(myFunction5, 10000)
-        //                     function myFunction5() {
-        //                         textoFade(textStandart, 'out');
-        //                         setTimeout(myFunction6, 3000)
-        //                         function myFunction6() {
-        //                             textoFade(textStandart, 'in', "Desde que o círculo foi\ninventado, o mundo ficou\nmelhor.\n\nNão há guerra, nem fome,\nnem catástrofe.\n\nA criminalidade diminuiu.\n\nÉ só algo nos atingir que\ntraçamos um círculo em\nvolta da gente.", 18, 0, 0, 'white');
-        //                             setTimeout(myFunction7, 10000)
-        //                             function myFunction7() {
-        //                                 textoFade(textStandart, 'out');
-        //                                 setTimeout(myFunction8, 3000)
-        //                                 function myFunction8() {
-        //                                     textoFade(textStandart, 'in', "Dizem que os círculos escondem\numa armadilha, que a\ngente entra algumas\nvezes para nunca\nmais sair.\n\nSimplesmente esquecemos\nde nossa existência.", 18, 0, 0, 'white');
-        //                                     setTimeout(myFunction9, 15000)
-        //                                     function myFunction9() {
-        //                                         textoFade(textStandart, 'out');
-        //                                         setTimeout(myFunction10, 3000)
-        //                                         function myFunction10() {
-        //                                             textoFade(textStandart, 'in', "Parte de mim ainda existe.\n\nCorpo, espírito e alma.\n\nUsarei com sabedoria para\nvencer as armadilhas.", 18, 0, 0, 'white');
-        //                                             app.stage.addChild(textureButton0I);
-        //                                             app.stage.addChild(textureButton1I);
-        //                                             app.stage.addChild(textureButton2I);
-        //                                             setTimeout(myFunction11, 8000)
-        //                                             function myFunction11() {
-        //                                                 textoFade(textStandart, 'out');
-        //                                                 textoFade(textureButton0I, 'out');
-        //                                                 textoFade(textureButton1I, 'out');
-        //                                                 textoFade(textureButton2I, 'out');
-        //                                                 setTimeout(myFunction12, 3000)
-        //                                                 function myFunction12() {
-        //                                                     textoFade(textStandart, 'in', "\nParte de mim tenta\nentender como vim\nparar aqui.\n\nE parte de mim deseja sair...", 18, 0, 0, 'white');
-        //                                                     app.stage.removeChild(textureButton0I);
-        //                                                     app.stage.removeChild(textureButton1I);
-        //                                                     app.stage.removeChild(textureButton2I);
-        //                                                     setTimeout(myFunction13, 3000)
-        //                                                     function myFunction13() {
-        //                                                         textoFade(textStandart, 'out');
-        //                                                     }
-        //                                                     setTimeout(() => {
-        //                                                         start_game();
-        //                                                     }, 10000);
-        //                                                 }
-        //                                             }
-        //                                         }
-        //                                     }
-        //                                 }
-        //                             }
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        // INTRODUÇÃO
+        function capitulo_intro() {
+            // introSound.play();
+            textoFade(textStandart, 'in', "Use para vencer seus inimigos", 18, 0, 0, 'white');
+            app.stage.addChild(textureButton0I);
+            app.stage.addChild(textureButton1I);
+            app.stage.addChild(textureButton2I);
+            setTimeout(myFunction11, 3000)
+            function myFunction11() {
+                textoFade(textStandart, 'out');
+                textoFade(textureButton0I, 'out');
+                textoFade(textureButton1I, 'out');
+                textoFade(textureButton2I, 'out');
+                setTimeout(myFunction12, 2000)
+                function myFunction12() {
+                    start_game();
+                }
+            }
+        }
         // ! FIM - ENREDO
 
-
-
-
-
-        start_game();
+        // start_game();
         function start_game() {
+
+            let statusMonstro = {
+                atk: (1 * nivel),
+                hp: (5 * nivel),
+                maxHp: (5 * nivel),
+            }
+
             battle.play();
 
-            let pontosMonstro = 5;
-            let maxPontosMonstro = pontosMonstro;
-            let pontos = 10;
-            let maxPontos = pontos;
+            status.hp = status.maxHp;
+            statusMonstro.hp = statusMonstro.maxHp;
+
             const container = new PIXI.Container();
             app.stage.addChild(container);
 
@@ -265,7 +210,7 @@ window.onload = function () {
                 circulos();
             }
 
-            const monster = PIXI.Sprite.from(`./img/enemy/${arrayMonsters[Math.floor(Math.random() * (6)) + 0]}`);
+            const monster = (nivel === 5 ? PIXI.Sprite.from(`./img/enemy/boss.png`) : PIXI.Sprite.from(`./img/enemy/${arrayMonsters[Math.floor(Math.random() * (6)) + 0]}`));
             monster.anchor.set(0.5);
             monster.x = app.screen.width / 2;
             monster.y = app.screen.height / 2 - 50;
@@ -318,8 +263,8 @@ window.onload = function () {
                     if (maquina === (i + 1)) {
                         Evasion1.play();
                         resultText.text = 'Esquivou!';
-                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos + '\nEXP: ' + exp;
-                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         // document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(0deg)';
                         ganhandoPerdendo()
@@ -330,9 +275,9 @@ window.onload = function () {
                     else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
                         Slash1.play();
                         resultText.text = 'Você ataca!';
-                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos + '\nEXP: ' + exp;
-                        pontosMonstro = pontosMonstro - 1;
-                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        statusMonstro.hp = statusMonstro.hp - status.atk;
+                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         // document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(0deg)';
                         ganhandoPerdendo()
@@ -341,9 +286,9 @@ window.onload = function () {
                     else {
                         Slash5.play();
                         resultText.text = 'Recebe dano!';
-                        pontos = pontos - 1;
-                        pontosText.text = 'HP: ' + pontos + '/' + maxPontos + '\nEXP: ' + exp;
-                        pontosTextMonster.text = 'HP: ' + pontosMonstro + '/' + maxPontosMonstro;
+                        status.hp = status.hp - 1;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(130deg)';
                         ganhandoPerdendo();
@@ -358,11 +303,10 @@ window.onload = function () {
                 }
                 container.addChild(button);
                 buttons.push(button);
-
             }
 
             function ganhandoPerdendo() {
-                if (pontosMonstro <= 0) {
+                if (statusMonstro.hp <= 0) {
                     battle.stop();
                     win.play();
                     exp = exp + xpGain;
@@ -388,41 +332,144 @@ window.onload = function () {
                         fill: '#ffffff', // gradient
                         align: 'center',
                     });
-                    const descText = new PIXI.Text('Você derrotou o monstro!\n\n +' + xpGain + ' EXP', style2);
+
+                    const style3 = new PIXI.TextStyle({
+                        fontFamily: 'Share Tech Mono',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        fill: '#ffffff', // gradient
+                        align: 'center',
+                    });
+
+                    const descText = new PIXI.Text((nivel === 5 ? 'Você derrotou o boss!\n\n' : `Você derrotou o monstro!\n\n +` + xpGain + ' EXP'), style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2 - 20;
                     container.addChild(descText);
 
-                    if (exp >= 50 && nivel === 1) {
+                    if (exp >= 50 && nivel === 1 ||
+                        exp >= 250 && nivel === 2 ||
+                        exp >= 750 && nivel === 3 ||
+                        exp >= 1250 && nivel === 4) {
                         nivel = nivel + 1;
                         const lvlText = new PIXI.Text('Subiu para o nível ' + nivel, style2);
                         lvlText.anchor.set(0.5);
                         lvlText.x = app.screen.width / 2;
                         lvlText.y = app.screen.height / 2 + 25;
                         container.addChild(lvlText);
+                        upou = true;
                     }
 
-                    const tryText = new PIXI.Text('Continuar →', style2);
-                    tryText.anchor.set(0.5);
-                    tryText.x = app.screen.width / 2;
-                    tryText.y = app.screen.height / 2 + 100;
+                    if (upou === true) {
+                        const atakText = new PIXI.Text('Atak▲', style3);
+                        atakText.anchor.set(0.5);
+                        atakText.x = app.screen.width / 2 - 75;
+                        atakText.y = app.screen.height / 2 + 75;
 
-                    tryText.interactive = true;
-                    tryText.buttonMode = true;
-                    tryText.on('pointerdown', onClick);
-                    container.addChild(tryText);
+                        atakText.interactive = true;
+                        atakText.buttonMode = true;
+                        atakText.on('pointerdown', onClickAtak);
+                        container.addChild(atakText);
+                        function onClickAtak() {
+                            status.atk = status.atk + 1;
+                            win.stop();
+                            container.destroy({
+                                children: true, texture: true,
+                                baseTexture: true
+                            });
+                            upou = false;
+                            start_game();
+                        }
 
-                    function onClick() {
-                        win.stop();
-                        container.destroy({
-                            children: true, texture: true,
-                            baseTexture: true
-                        });
-                        start_game();
+                        const hpText = new PIXI.Text('HP▲', style3);
+                        hpText.anchor.set(0.5);
+                        hpText.x = app.screen.width / 2;
+                        hpText.y = app.screen.height / 2 + 75;
+
+                        hpText.interactive = true;
+                        hpText.buttonMode = true;
+                        hpText.on('pointerdown', onClickHp);
+                        container.addChild(hpText);
+                        function onClickHp() {
+                            status.maxHp = status.maxHp + 5;
+                            win.stop();
+                            container.destroy({
+                                children: true, texture: true,
+                                baseTexture: true
+                            });
+                            upou = false;
+                            start_game();
+                        }
+
+                        const expText = new PIXI.Text('EXP▲', style3);
+                        expText.anchor.set(0.5);
+                        expText.x = app.screen.width / 2 + 75;
+                        expText.y = app.screen.height / 2 + 75;
+
+                        expText.interactive = true;
+                        expText.buttonMode = true;
+                        expText.on('pointerdown', onClickExp);
+                        container.addChild(expText);
+                        function onClickExp() {
+                            xpGain = xpGain + 50;
+                            win.stop();
+                            container.destroy({
+                                children: true, texture: true,
+                                baseTexture: true
+                            });
+                            upou = false;
+                            start_game();
+                        }
+
+                        const tryText = new PIXI.Text((nivel === 5 ? 'Fim de jogo' : "Continuar →"), style2);
+                        tryText.anchor.set(0.5);
+                        tryText.x = app.screen.width / 2;
+                        tryText.y = app.screen.height / 2 + 120;
+
+                        tryText.interactive = true;
+                        tryText.buttonMode = true;
+                        tryText.on('pointerdown', onClick);
+                        container.addChild(tryText);
+                        function onClick() {
+                            if (nivel === 5) {
+                                window.location.reload();
+                            }
+                            else {
+                                win.stop();
+                                container.destroy({
+                                    children: true, texture: true,
+                                    baseTexture: true
+                                });
+                                start_game();
+                            }
+                        }
+                    }
+                    else {
+                        const tryText = new PIXI.Text((nivel === 5 ? 'Fim de jogo' : "Continuar →"), style2);
+                        tryText.anchor.set(0.5);
+                        tryText.x = app.screen.width / 2;
+                        tryText.y = app.screen.height / 2 + 120;
+
+                        tryText.interactive = true;
+                        tryText.buttonMode = true;
+                        tryText.on('pointerdown', onClick);
+                        container.addChild(tryText);
+                        function onClick() {
+                            if (nivel === 5) {
+                                window.location.reload();
+                            }
+                            else {
+                                win.stop();
+                                container.destroy({
+                                    children: true, texture: true,
+                                    baseTexture: true
+                                });
+                                start_game();
+                            }
+                        }
                     }
                 }
-                else if (pontos <= 0) {
+                else if (status.hp <= 0) {
                     battle.stop();
                     lose.play();
                     exp = exp + xpGain;
@@ -473,7 +520,7 @@ window.onload = function () {
 
             resultado = 'Escolha um simbolo';
 
-            const pontosText = new PIXI.Text('HP: ' + pontos + '/' + maxPontos + '\nEXP: ' + exp, {
+            const pontosText = new PIXI.Text('HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk, {
                 fontFamily: 'Share Tech Mono',
                 fontSize: 16,
                 fontWeight: 500,
@@ -485,7 +532,7 @@ window.onload = function () {
             pontosText.y = app.screen.height / 2 + 110;
             container.addChild(pontosText);
 
-            const pontosTextMonster = new PIXI.Text('HP: ' + pontosMonstro + '/' + maxPontosMonstro, {
+            const pontosTextMonster = new PIXI.Text('HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp, {
                 fontFamily: 'Share Tech Mono',
                 fontSize: 18,
                 fontWeight: 500,
@@ -560,10 +607,10 @@ function textoFade(textSample, fade, textoIn, tamanho, w, h, color) {
         if (h !== '') {
             textSample.y = app.screen.height / 2 + h;
         }
-        TweenMax.to(textSample, 3.0, { alpha: fade, repeat: 0, yoyo: false });
+        TweenMax.to(textSample, 1.0, { alpha: fade, repeat: 0, yoyo: false });
     }
     else if (fade === 'out') {
         fade = 0;
-        TweenMax.to(textSample, 3.0, { alpha: fade, repeat: 0, yoyo: false });
+        TweenMax.to(textSample, 1.0, { alpha: fade, repeat: 0, yoyo: false });
     }
 }
