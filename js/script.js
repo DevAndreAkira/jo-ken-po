@@ -31,9 +31,12 @@ window.onload = function () {
 
     let upou = false;
     let exp = 0;
-    let xpGain = 500;
+    let xpGain = 50;
     // let xpGain = Math.floor(Math.random() * (50)) + 1;
     let nivel = 1;
+
+    let apromora1, apromora2, apromora3;
+
     let status = {
         atk: 1,
         maxHp: 10,
@@ -62,20 +65,35 @@ window.onload = function () {
     }());
 
     function init() {
+
         const circle1Intro = PIXI.Sprite.from('./img/circle1.png');
         const circle2Intro = PIXI.Sprite.from('./img/circle2.png');
-        circle1Intro.anchor.set(0.5);
-        circle2Intro.anchor.set(0.5);
-        circle1Intro.x = app.screen.width / 2;
-        circle1Intro.y = app.screen.height / 2;
-        circle2Intro.x = app.screen.width / 2;
-        circle2Intro.y = app.screen.height / 2;
-        app.stage.addChild(circle1Intro);
-        app.stage.addChild(circle2Intro);
-        app.ticker.add(() => {
-            circle1Intro.rotation += 0.0015;
-            circle2Intro.rotation -= 0.003;
-        });
+        if (localStorage.getItem("key") == 1) {
+            circle1Intro.anchor.set(0.5);
+            circle1Intro.x = app.screen.width / 2;
+            circle1Intro.y = app.screen.height / 2;
+            app.stage.addChild(circle1Intro);
+            app.ticker.add(() => {
+                circle1Intro.rotation += 0.0015;
+            });
+        }
+        else if (localStorage.getItem("key") == 2) {
+            circle1Intro.anchor.set(0.5);
+            circle2Intro.anchor.set(0.5);
+            circle1Intro.x = app.screen.width / 2;
+            circle1Intro.y = app.screen.height / 2;
+            circle2Intro.x = app.screen.width / 2;
+            circle2Intro.y = app.screen.height / 2;
+            app.stage.addChild(circle1Intro);
+            app.stage.addChild(circle2Intro);
+            app.ticker.add(() => {
+                circle1Intro.rotation += 0.0015;
+                circle2Intro.rotation -= 0.003;
+            });
+        }
+        else {
+
+        }
 
         // ? SOUND EFFECT
         const Slash1 = PIXI.sound.Sound.from('./sound/Slash1.ogg');
@@ -97,7 +115,18 @@ window.onload = function () {
         battle.loop = true;
 
         //& CIRCULOS
-        function circulos() {
+        function circulos1() {
+            const circle1 = PIXI.Sprite.from('./img/circle1.png');
+            circle1.anchor.set(0.5);
+            circle1.x = app.screen.width / 2;
+            circle1.y = app.screen.height / 2;
+            app.stage.addChild(circle1);
+            app.ticker.add(() => {
+                circle1.rotation += 0.0015;
+            });
+        }
+
+        function circulos2() {
             const circle1 = PIXI.Sprite.from('./img/circle1.png');
             const circle2 = PIXI.Sprite.from('./img/circle2.png');
             circle1.anchor.set(0.5);
@@ -113,15 +142,6 @@ window.onload = function () {
                 circle2.rotation -= 0.003;
             });
         }
-
-        const circle1 = PIXI.Sprite.from('./img/circle1.png');
-        const circle2 = PIXI.Sprite.from('./img/circle2.png');
-        circle1.anchor.set(0.5);
-        circle2.anchor.set(0.5);
-        circle1.x = app.screen.width / 2;
-        circle1.y = app.screen.height / 2;
-        circle2.x = app.screen.width / 2;
-        circle2.y = app.screen.height / 2;
 
         const textureButton0I = PIXI.Sprite.from('./img/pedra.png');
         const textureButton1I = PIXI.Sprite.from('./img/papel.png');
@@ -159,8 +179,13 @@ window.onload = function () {
             if (eventIntro === 1) {
                 soundClick.play();
                 textoFade(textStandart, 'out');
-                textoFade(circle1Intro, 'out');
-                textoFade(circle2Intro, 'out');
+                if (localStorage.getItem("key") == 1) {
+                    textoFade(circle1Intro, 'out');
+                }
+                else if (localStorage.getItem("key") == 2) {
+                    textoFade(circle1Intro, 'out');
+                    textoFade(circle2Intro, 'out');
+                }
                 setTimeout(myFunction, 1000)
                 function myFunction() {
                     capitulo_intro()
@@ -171,7 +196,7 @@ window.onload = function () {
         // INTRODUÇÃO
         function capitulo_intro() {
             // introSound.play();
-            textoFade(textStandart, 'in', "Use para vencer seus inimigos", 18, 0, 0, 'white');
+            textoFade(textStandart, 'in', "Use para vencer seus inimigos\n\nComplete o portal para sair", 18, 0, 0, 'white');
             app.stage.addChild(textureButton0I);
             app.stage.addChild(textureButton1I);
             app.stage.addChild(textureButton2I);
@@ -207,7 +232,12 @@ window.onload = function () {
             app.stage.addChild(container);
 
             if (exp === 0) {
-                circulos();
+                if (localStorage.getItem("key") == 1) {
+                    circulos1();
+                }
+                else if (localStorage.getItem("key") == 2) {
+                    circulos2();
+                }
             }
 
             const monster = (nivel === 5 ? PIXI.Sprite.from(`./img/enemy/boss.png`) : PIXI.Sprite.from(`./img/enemy/${arrayMonsters[Math.floor(Math.random() * (6)) + 0]}`));
@@ -221,6 +251,22 @@ window.onload = function () {
                     container.removeChild(container.children[0])
                 }
             }
+
+            // function aprimoramento() {
+            //     if (apromora1 > apromora2 && apromora1 > apromora3) {
+            //         status.atk = status.atk + 1;
+            //     }
+            //     else if (apromora2 > apromora1 && apromora2 > apromora3) {
+            //         status.maxHp = status.maxHp + 5;
+            //     }
+            //     else if (apromora3 > apromora1 && apromora3 > apromora2) {
+            //         xpGain = xpGain + 50;
+            //     }
+
+            //     apromora1 = 0;
+            //     apromora2 = 0;
+            //     apromora3 = 0;
+            // }
 
             //^ ANIMAÇÃO AO ATACAR
             function animacao() {
@@ -259,11 +305,20 @@ window.onload = function () {
                 button.on('pointerdown', onButtonUp)
 
                 function onButtonUp() {
+                    // if (i === 0) {
+                    //     apromora1 = apromora1 + 1;
+                    // }
+                    // else if (i === 1) {
+                    //     apromora2 = apromora2 + 1;
+                    // }
+                    // else if (i === 2) {
+                    //     apromora3 = apromora3 + 1;
+                    // }
                     let maquina = Math.floor(Math.random() * (3)) + 1;
                     if (maquina === (i + 1)) {
                         Evasion1.play();
                         resultText.text = 'Esquivou!';
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
                         pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         // document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(0deg)';
@@ -275,7 +330,7 @@ window.onload = function () {
                     else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
                         Slash1.play();
                         resultText.text = 'Você ataca!';
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
                         statusMonstro.hp = statusMonstro.hp - status.atk;
                         pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         // document.body.style.transition = '.5s';
@@ -287,7 +342,7 @@ window.onload = function () {
                         Slash5.play();
                         resultText.text = 'Recebe dano!';
                         status.hp = status.hp - 1;
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk;
+                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
                         pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
                         document.body.style.transition = '.5s';
                         // document.body.style.filter = 'hue-rotate(130deg)';
@@ -341,16 +396,16 @@ window.onload = function () {
                         align: 'center',
                     });
 
-                    const descText = new PIXI.Text((nivel === 5 ? 'Você derrotou o boss!\n\n' : `Você derrotou o monstro!\n\n +` + xpGain + ' EXP'), style2);
+                    const descText = new PIXI.Text((nivel === 5 ? 'Você derrotou o boss!\n\nVocê recebeu parte do portal' : `Você derrotou o monstro!\n\n +` + xpGain + ' EXP'), style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
                     descText.y = app.screen.height / 2 - 20;
                     container.addChild(descText);
 
                     if (exp >= 50 && nivel === 1 ||
-                        exp >= 250 && nivel === 2 ||
-                        exp >= 750 && nivel === 3 ||
-                        exp >= 1250 && nivel === 4) {
+                        exp >= 100 && nivel === 2 ||
+                        exp >= 150 && nivel === 3 ||
+                        exp >= 250 && nivel === 4) {
                         nivel = nivel + 1;
                         const lvlText = new PIXI.Text('Subiu para o nível ' + nivel, style2);
                         lvlText.anchor.set(0.5);
@@ -411,7 +466,7 @@ window.onload = function () {
                         expText.on('pointerdown', onClickExp);
                         container.addChild(expText);
                         function onClickExp() {
-                            xpGain = xpGain + 50;
+                            xpGain = xpGain + 150;
                             win.stop();
                             container.destroy({
                                 children: true, texture: true,
@@ -419,29 +474,6 @@ window.onload = function () {
                             });
                             upou = false;
                             start_game();
-                        }
-
-                        const tryText = new PIXI.Text((nivel === 5 ? 'Fim de jogo' : "Continuar →"), style2);
-                        tryText.anchor.set(0.5);
-                        tryText.x = app.screen.width / 2;
-                        tryText.y = app.screen.height / 2 + 120;
-
-                        tryText.interactive = true;
-                        tryText.buttonMode = true;
-                        tryText.on('pointerdown', onClick);
-                        container.addChild(tryText);
-                        function onClick() {
-                            if (nivel === 5) {
-                                window.location.reload();
-                            }
-                            else {
-                                win.stop();
-                                container.destroy({
-                                    children: true, texture: true,
-                                    baseTexture: true
-                                });
-                                start_game();
-                            }
                         }
                     }
                     else {
@@ -456,6 +488,12 @@ window.onload = function () {
                         container.addChild(tryText);
                         function onClick() {
                             if (nivel === 5) {
+                                if (localStorage.getItem("key") == 1) {
+                                    localStorage.setItem("key", 2)
+                                }
+                                else {
+                                    localStorage.setItem("key", 1);
+                                }
                                 window.location.reload();
                             }
                             else {
@@ -468,6 +506,7 @@ window.onload = function () {
                             }
                         }
                     }
+                    // aprimoramento();
                 }
                 else if (status.hp <= 0) {
                     battle.stop();
@@ -520,7 +559,7 @@ window.onload = function () {
 
             resultado = 'Escolha um simbolo';
 
-            const pontosText = new PIXI.Text('HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/250" : nivel === 3 ? "/750" : nivel === 4 ? "/1250" : '') + '\nAtak: ' + status.atk, {
+            const pontosText = new PIXI.Text('HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk, {
                 fontFamily: 'Share Tech Mono',
                 fontSize: 16,
                 fontWeight: 500,
