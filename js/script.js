@@ -38,7 +38,7 @@ window.onload = function () {
     let apromora1, apromora2, apromora3;
 
     let status = {
-        atk: 100,
+        atk: 1,
         maxHp: 10,
         hp: 10,
         potion: 0,
