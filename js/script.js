@@ -38,7 +38,7 @@ window.onload = function () {
     let apromora1, apromora2, apromora3;
 
     let status = {
-        atk: 1,
+        atk: 100,
         maxHp: 10,
         hp: 10,
         potion: 0,
@@ -475,10 +475,20 @@ window.onload = function () {
                                 else if (localStorage.getItem("key") == 2) {
                                     textoFade(circle1Intro, 'out');
                                     textoFade(circle2Intro, 'out');
+                                    const tryText2 = new PIXI.Text("Parabéns, você está livre!", {
+                                        fontFamily: 'Share Tech Mono',
+                                        fontSize: 18,
+                                        fontWeight: 500,
+                                        fill: '#000000', // gradient
+                                    });
+                                    tryText2.anchor.set(0.5);
+                                    tryText2.x = app.screen.width / 2;
+                                    tryText2.y = app.screen.height / 2;
+                                    container.addChild(tryText2);
                                     document.querySelector("body").style.background = "white";
                                     setTimeout(() => {
-                                        window.location.reload();
-                                    }, 10000)
+                                        window.close();
+                                    }, 12000)
 
                                 }
                                 else {
@@ -521,8 +531,8 @@ window.onload = function () {
                         fontSize: 18,
                         fontWeight: 500,
                         fill: '#ffffff', // gradient
-
                     });
+
                     const descText = new PIXI.Text('Parece que hoje você\nfoi derrotado...', style2);
                     descText.anchor.set(0.5);
                     descText.x = app.screen.width / 2;
