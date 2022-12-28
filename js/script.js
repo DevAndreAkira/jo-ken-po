@@ -38,7 +38,7 @@ window.onload = function () {
     let apromora1, apromora2, apromora3;
 
     let status = {
-        atk: 1,
+        atk: 100,
         maxHp: 10,
         hp: 10,
         potion: 0,
@@ -113,6 +113,9 @@ window.onload = function () {
         const battle = PIXI.sound.Sound.from('./sound/base_per.ogg');
         battle.volume = 0.25;
         battle.loop = true;
+        const nature = PIXI.sound.Sound.from('./sound/nature.ogg');
+        nature.volume = .5;
+        nature.loop = true;
 
         //& CIRCULOS
 
@@ -473,6 +476,10 @@ window.onload = function () {
                                     window.location.reload();
                                 }
                                 else if (localStorage.getItem("key") == 2) {
+                                    container.destroy({
+                                        children: true, texture: true,
+                                        baseTexture: true
+                                    });
                                     textoFade(circle1Intro, 'out');
                                     textoFade(circle2Intro, 'out');
                                     const tryText2 = new PIXI.Text("Parabéns, você está livre!", {
@@ -484,8 +491,9 @@ window.onload = function () {
                                     tryText2.anchor.set(0.5);
                                     tryText2.x = app.screen.width / 2;
                                     tryText2.y = app.screen.height / 2;
-                                    container.addChild(tryText2);
+                                    app.stage.addChild(tryText2);
                                     document.querySelector("body").style.background = "white";
+                                    nature.play();
                                     setTimeout(() => {
                                         window.close();
                                     }, 12000)
