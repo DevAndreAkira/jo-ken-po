@@ -1,6 +1,6 @@
 {
-    "name": "Arcano 5",
-    "short_name": "Arcane 5 - Jogo de jo-ken-po, experimentação com PixiJS - André Akira",
+    "name": "Jo-ken-po RPG",
+    "short_name": "Jo-ken-po RPG - Jogo de jo-ken-po, experimentação com PixiJS - André Akira",
     "icons": [
         {
             "src": "./img/192.png",
