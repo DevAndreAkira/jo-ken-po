@@ -175,6 +175,9 @@ window.onload = function () {
         let eventIntro = 1;
 
         function onButtonDownIntro() {
+            if (!localStorage.getItem("key") || localStorage.getItem("key") === 0) {
+                localStorage.setItem("key", 0);
+            }
             textStandart.interactive = false;
 
             if (eventIntro === 1) {
@@ -495,6 +498,8 @@ window.onload = function () {
                                     document.querySelector("body").style.background = "white";
                                     nature.play();
                                     setTimeout(() => {
+                                        // FINAL
+                                        localStorage.setItem("key", 0);
                                         window.close();
                                     }, 12000)
 
