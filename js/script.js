@@ -1,4 +1,4 @@
-PIXI.settings.RESOLUTION = 3;
+PIXI.settings.RESOLUTION = 2;
 
 let app;
 
@@ -14,7 +14,6 @@ window.onload = function () {
         );
     }
     else {
-
         app = new PIXI.Application(
             {
                 width: 600,
@@ -23,146 +22,42 @@ window.onload = function () {
             }
         );
     }
-
     document.body.appendChild(app.view);
 
-    let arrayAnimation = ['anima0.png', 'anima1.png', 'anima2.png', 'anima3.png'];
-    let arrayMonsters = ['Rat.png', 'Slime.png', 'Hornet.png', 'Imp.png', 'Scorpion.png', 'Spider.png'];
+    //* Variaveis
+    const carinha = PIXI.Texture.from('./img/carinha.png');
+    const carinhaPedra = PIXI.Texture.from('./img/carinha-pedra.png');
+    const carinhaPapel = PIXI.Texture.from('./img/carinha-papel.png');
+    const carinhaTesoura = PIXI.Texture.from('./img/carinha-tesoura.png');
+    const arrayCarinha = [carinha, carinhaPedra, carinhaPapel, carinhaTesoura];
 
-    let upou = false;
-    let exp = 0;
-    let xpGain = 25;
-    // let xpGain = Math.floor(Math.random() * (50)) + 1;
-    let nivel = 1;
+    const textureButton0 = PIXI.Texture.from('./img/pedra.png');
+    const textureButton1 = PIXI.Texture.from('./img/papel.png');
+    const textureButton2 = PIXI.Texture.from('./img/tesoura.png');
+    const arrayTexture = [textureButton0, textureButton1, textureButton2];
+    const buttons = [];
 
-    let apromora1, apromora2, apromora3;
+    const buttonPositions = [
+        app.screen.width / 2 - 75, app.screen.height / 2 + 55,
+        app.screen.width / 2, app.screen.height / 2 + 55,
+        app.screen.width / 2 + 75, app.screen.height / 2 + 55,
+    ];
 
-    let status = {
-        atk: 1,
-        maxHp: 10,
-        hp: 10,
-        potion: 0,
-    }
-
-    window.WebFontConfig = {
-        google: {
-            families: ['Share Tech Mono'],
-        },
-
-        active() {
-            init();
-        },
-    };
-
-    (function () {
-        const wf = document.createElement('script');
-        wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'
-            }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        const s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-    }());
+    init();
 
     function init() {
+        let pontuacao1 = 0;
+        let pontuacao2 = 0;
+        let arrayTextPlayer1 = [pontuacao1, 0x000000, app.screen.width / 2 - 50, app.screen.height / 2];
+        let arrayTextPlayer2 = [pontuacao2, 0x000000, app.screen.width / 2 + 50, app.screen.height / 2];
 
-        const circle1Intro = PIXI.Sprite.from('./img/circle1.png');
-        const circle2Intro = PIXI.Sprite.from('./img/circle2.png');
-        if (localStorage.getItem("key") == 1) {
-            circle1Intro.anchor.set(0.5);
-            circle1Intro.x = app.screen.width / 2;
-            circle1Intro.y = app.screen.height / 2;
-            app.stage.addChild(circle1Intro);
-            app.ticker.add(() => {
-                circle1Intro.rotation += 0.0015;
-            });
-        }
-        else if (localStorage.getItem("key") == 2) {
-            circle1Intro.anchor.set(0.5);
-            circle2Intro.anchor.set(0.5);
-            circle1Intro.x = app.screen.width / 2;
-            circle1Intro.y = app.screen.height / 2;
-            circle2Intro.x = app.screen.width / 2;
-            circle2Intro.y = app.screen.height / 2;
-            app.stage.addChild(circle1Intro);
-            app.stage.addChild(circle2Intro);
-            app.ticker.add(() => {
-                circle1Intro.rotation += 0.0015;
-                circle2Intro.rotation -= 0.003;
-            });
-        }
-        else {
+        const containerIntro = new PIXI.Container();
+        app.stage.addChild(containerIntro);
 
-        }
-
-        // ? SOUND EFFECT
-        const Slash1 = PIXI.sound.Sound.from('./sound/Slash1.ogg');
-        Slash1.volume = 0.05;
-        const Evasion1 = PIXI.sound.Sound.from('./sound/Evasion1.ogg');
-        Evasion1.volume = 0.05;
-        const Slash5 = PIXI.sound.Sound.from('./sound/Slash5.ogg');
-        Slash5.volume = 0.05;
-        const soundClick = PIXI.sound.Sound.from('./sound/Cursor1.ogg');
-        soundClick.volume = 0.25;
-
-        // ? BGM
-        const lose = PIXI.sound.Sound.from('./sound/cantus_prossequitur.ogg');
-        lose.volume = 0.25;
-        const win = PIXI.sound.Sound.from('./sound/cantus_noster_prossequitur.ogg');
-        win.volume = 0.25;
-        const battle = PIXI.sound.Sound.from('./sound/base_per.ogg');
-        battle.volume = 0.25;
-        battle.loop = true;
-        const nature = PIXI.sound.Sound.from('./sound/nature.ogg');
-        nature.volume = .5;
-        nature.loop = true;
-
-        //& CIRCULOS
-
-        // function circulos1() {
-        //     circle1.anchor.set(0.5);
-        //     circle1.x = app.screen.width / 2;
-        //     circle1.y = app.screen.height / 2;
-        //     app.stage.addChild(circle1);
-        //     app.ticker.add(() => {
-        //         circle1.rotation += 0.0015;
-        //     });
-        // }
-
-        // function circulos2() {
-        //     circle1.anchor.set(0.5);
-        //     circle2.anchor.set(0.5);
-        //     circle1.x = app.screen.width / 2;
-        //     circle1.y = app.screen.height / 2;
-        //     circle2.x = app.screen.width / 2;
-        //     circle2.y = app.screen.height / 2;
-        //     app.stage.addChild(circle1);
-        //     app.stage.addChild(circle2);
-        //     app.ticker.add(() => {
-        //         circle1.rotation += 0.0015;
-        //         circle2.rotation -= 0.003;
-        //     });
-        // }
-
-        const textureButton0I = PIXI.Sprite.from('./img/pedra.png');
-        const textureButton1I = PIXI.Sprite.from('./img/papel.png');
-        const textureButton2I = PIXI.Sprite.from('./img/tesoura.png');
-        textureButton0I.anchor.set(0.5);
-        textureButton1I.anchor.set(0.5);
-        textureButton2I.anchor.set(0.5);
-        textureButton0I.x = app.screen.width / 2 - 75;
-        textureButton0I.y = app.screen.height / 2 + 95;
-        textureButton1I.x = app.screen.width / 2;
-        textureButton1I.y = app.screen.height / 2 + 95;
-        textureButton2I.x = app.screen.width / 2 + 75;
-        textureButton2I.y = app.screen.height / 2 + 95;
-
-
-        // // ! ENREDO
         const textStandart = new PIXI.Text('Começar', {
-            fontFamily: 'Share Tech Mono',
+            fontFamily: 'sans-serif',
             fontSize: 30,
-            fill: 'white',
+            fill: '0x000000',
             align: 'center',
         });
         textStandart.anchor.set(0.5);
@@ -170,498 +65,143 @@ window.onload = function () {
         textStandart.interactive = true;
         textStandart.buttonMode = true;
         textStandart.on('pointerdown', onButtonDownIntro);
-        app.stage.addChild(textStandart);
-
-        let eventIntro = 1;
+        containerIntro.addChild(textStandart);
 
         function onButtonDownIntro() {
-            if (!localStorage.getItem("key") || localStorage.getItem("key") === 0) {
-                localStorage.setItem("key", 0);
-            }
-            textStandart.interactive = false;
-
-            if (eventIntro === 1) {
-                soundClick.play();
-                textoFade(textStandart, 'out');
-                if (localStorage.getItem("key") == 1) {
-                    textoFade(circle1Intro, 'out');
-                }
-                else if (localStorage.getItem("key") == 2) {
-                    textoFade(circle1Intro, 'out');
-                    textoFade(circle2Intro, 'out');
-                }
-                setTimeout(myFunction, 1000)
-                function myFunction() {
-                    capitulo_intro()
-                }
-            }
+            containerIntro.destroy();
+            start_game();
         }
 
-        // INTRODUÇÃO
-        function capitulo_intro() {
-            // introSound.play();
-            textoFade(textStandart, 'in', "Use para vencer seus inimigos\n\nComplete o portal para sair", 18, 0, 0, 'white');
-            app.stage.addChild(textureButton0I);
-            app.stage.addChild(textureButton1I);
-            app.stage.addChild(textureButton2I);
-            setTimeout(myFunction11, 3000)
-            function myFunction11() {
-                textoFade(textStandart, 'out');
-                textoFade(textureButton0I, 'out');
-                textoFade(textureButton1I, 'out');
-                textoFade(textureButton2I, 'out');
-                setTimeout(myFunction12, 2000)
-                function myFunction12() {
-                    start_game();
-                }
-            }
-        }
-        // ! FIM - ENREDO
-
-        // start_game();
         function start_game() {
-            const circle1 = PIXI.Sprite.from('./img/circle1.png');
-            const circle2 = PIXI.Sprite.from('./img/circle2.png');
 
-            let statusMonstro = {
-                atk: (1 * nivel),
-                hp: (5 * nivel),
-                maxHp: (5 * nivel),
-            }
+            const containerStart = new PIXI.Container();
+            app.stage.addChild(containerStart);
 
-            battle.play();
+            // const bg = PIXI.Texture.from('./img/1p2.png');
+            // const tilingSprite = new PIXI.TilingSprite(
+            //     bg,
+            //     app.screen.width,
+            //     app.screen.height,
+            // );
+            // containerStart.addChild(tilingSprite);
 
-            status.hp = status.maxHp;
-            statusMonstro.hp = statusMonstro.maxHp;
+            const textPlayer1 = new PIXI.Text(arrayTextPlayer1[0], {
+                fontFamily: 'sans-serif',
+                fontSize: 20,
+                fill: arrayTextPlayer1[1],
+                align: 'left',
+            });
+            textPlayer1.anchor.set(0.5);
+            textPlayer1.x = arrayTextPlayer1[2];
+            textPlayer1.y = arrayTextPlayer1[3];
+            containerStart.addChild(textPlayer1);
 
-            const container = new PIXI.Container();
-            app.stage.addChild(container);
+            const textPlayer2 = new PIXI.Text(arrayTextPlayer2[0], {
+                fontFamily: 'sans-serif',
+                fontSize: 20,
+                fill: arrayTextPlayer1[1],
+                align: 'left',
+            });
+            textPlayer2.anchor.set(0.5);
+            textPlayer2.x = arrayTextPlayer2[2];
+            textPlayer2.y = arrayTextPlayer2[3];
+            containerStart.addChild(textPlayer2);
 
-            if (exp === 0) {
-                if (localStorage.getItem("key") == 1) {
-                    circle1.anchor.set(0.5);
-                    circle1.x = app.screen.width / 2;
-                    circle1.y = app.screen.height / 2;
-                    app.stage.addChild(circle1);
-                    app.ticker.add(() => {
-                        circle1.rotation += 0.0015;
-                    });
-                }
-                else if (localStorage.getItem("key") == 2) {
-                    textoFade(circle1Intro, 'in', '', '', '', '', '');
-                    textoFade(circle2Intro, 'in', '', '', '', '', '');
-                }
-            }
+            const textGame = new PIXI.Text('', {
+                fontFamily: 'sans-serif',
+                fontSize: 20,
+                fill: arrayTextPlayer1[1],
+                align: 'left',
+            });
+            textGame.anchor.set(0.5);
+            textGame.x = app.screen.width / 2;
+            textGame.y = app.screen.height / 2 - 150;
+            containerStart.addChild(textGame);
 
-            const monster = (nivel === 5 ? PIXI.Sprite.from(`./img/enemy/boss.png`) : PIXI.Sprite.from(`./img/enemy/${arrayMonsters[Math.floor(Math.random() * (6)) + 0]}`));
-            monster.anchor.set(0.5);
-            monster.x = app.screen.width / 2;
-            monster.y = app.screen.height / 2 - 50;
-            container.addChild(monster);
-
-            function apagandoTudo() {
-                while (container.children[0]) {
-                    container.removeChild(container.children[0])
-                }
-            }
-
-            //^ ANIMAÇÃO AO ATACAR
-            function animacao() {
-                arrayAnimation.forEach((e, i) => {
-                    const anima = PIXI.Sprite.from(`./img/animation/${arrayAnimation[i]}`);
-                    anima.anchor.set(0.5);
-                    anima.x = app.screen.width / 2;
-                    anima.y = app.screen.height / 2 - 50;
-                    container.addChild(anima);
-                    setTimeout(() => {
-                        container.removeChild(anima);
-                    }, 100)
-                })
-            }
-
-            const textureButton0 = PIXI.Texture.from('./img/pedra.png');
-            const textureButton1 = PIXI.Texture.from('./img/papel.png');
-            const textureButton2 = PIXI.Texture.from('./img/tesoura.png');
-            const array = [textureButton0, textureButton1, textureButton2];
-            const buttons = [];
-
-            // SIMBOLOS
-            const buttonPositions = [
-                app.screen.width / 2 - 75, app.screen.height / 2 + 55,
-                app.screen.width / 2, app.screen.height / 2 + 55,
-                app.screen.width / 2 + 75, app.screen.height / 2 + 55,
-            ];
+            const oponente = new PIXI.Sprite(arrayCarinha[0]);
+            oponente.anchor.set(0.5);
+            oponente.x = app.screen.width / 2;
+            oponente.y = app.screen.height / 2 - 75;
+            containerStart.addChild(oponente);
 
             for (let i = 0; i < 3; i++) {
-                const button = new PIXI.Sprite(array[i]);
+                const button = new PIXI.Sprite(arrayTexture[i]);
                 button.anchor.set(0.5);
                 button.x = buttonPositions[i * 2];
                 button.y = buttonPositions[i * 2 + 1];
                 button.interactive = true;
                 button.buttonMode = true;
-                button.on('pointerdown', onButtonUp)
-
-                function onButtonUp() {
+                button.on('pointerdown', () => {
+                    // Muda as imagens do oponente
                     let maquina = Math.floor(Math.random() * (3)) + 1;
-                    if (maquina === (i + 1)) {
-                        Evasion1.play();
-                        resultText.text = 'Esquivou!';
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
-                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
-                        // document.body.style.transition = '.5s';
-                        // document.body.style.filter = 'hue-rotate(0deg)';
-                        ganhandoPerdendo();
-                        gsap.to(monster, {
-                            y: app.screen.height / 2 - 75, duration: 0.1, repeat: 1, yoyo: true,
-                        });
+                    if (maquina === 1) {
+                        oponente.texture = arrayCarinha[1];
                     }
-                    else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
-                        Slash1.play();
-                        resultText.text = 'Você ataca!';
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
-                        statusMonstro.hp = statusMonstro.hp - status.atk;
-                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
-                        // document.body.style.transition = '.5s';
-                        // document.body.style.filter = 'hue-rotate(0deg)';
-                        ganhandoPerdendo()
-                        animacao();
+                    else if (maquina === 2) {
+                        oponente.texture = arrayCarinha[2];
                     }
                     else {
-                        Slash5.play();
-                        resultText.text = 'Recebe dano!';
-                        status.hp = status.hp - 1;
-                        pontosText.text = 'HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk;
-                        pontosTextMonster.text = 'HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp;
-                        document.body.style.transition = '.5s';
-                        // document.body.style.filter = 'hue-rotate(130deg)';
-                        ganhandoPerdendo();
-                        gsap.to(monster, {
-                            y: app.screen.height / 2 - 20, duration: 0.1, repeat: 1, yoyo: true,
-                        });
-                        // setTimeout(() => {
-                        //     document.body.style.transition = '.5s';
-                        //     document.body.style.filter = 'hue-rotate(0deg)';
-                        // }, 300)
+                        oponente.texture = arrayCarinha[3];
                     }
-                }
-                container.addChild(button);
+
+                    // Empate
+                    if (maquina === (i + 1)) {
+                        textGame.text = 'Empate';
+                    }
+                    // Ganhou
+                    else if ((i === 0 && maquina === 3) || (i === 1 && maquina === 1) || (i === 2 && maquina === 2)) {
+                        pontuacao1 = pontuacao1 + 1;
+                        textPlayer1.text = pontuacao1;
+                        textGame.text = 'Ganhou';
+                    }
+                    // Perdeu
+                    else {
+                        pontuacao2 = pontuacao2 + 1;
+                        textPlayer2.text = pontuacao2;
+                        textGame.text = 'Perdeu';
+                    }
+                    ganhouPerdeu()
+                })
+                containerStart.addChild(button);
                 buttons.push(button);
             }
 
-            function ganhandoPerdendo() {
-                if (statusMonstro.hp <= 0) {
-                    battle.stop();
-                    win.play();
-                    exp = exp + xpGain;
-                    apagandoTudo()
-                    const style = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                        fontSize: 28,
-                        fontWeight: 500,
-                        fill: '#ffffff', // gradient
-                    });
+            function ganhouPerdeu() {
 
-                    const basicText = new PIXI.Text('Parabéns', style);
-                    basicText.anchor.set(0.5);
-                    basicText.x = app.screen.width / 2;
-                    basicText.y = app.screen.height / 2 - 75;
-                    container.addChild(basicText);
-
-                    const style2 = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                        fontSize: 18,
-                        fontWeight: 500,
-                        fill: '#ffffff', // gradient
-                        align: 'center',
-                    });
-
-                    const style3 = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                        fontSize: 14,
-                        fontWeight: 500,
-                        fill: '#ffffff', // gradient
-                        align: 'center',
-                    });
-
-                    const descText = new PIXI.Text((nivel === 5 ? 'Você derrotou o boss!\n\nVocê recebeu parte do portal' : `Você derrotou o monstro!\n\n +` + xpGain + ' EXP'), style2);
-                    descText.anchor.set(0.5);
-                    descText.x = app.screen.width / 2;
-                    descText.y = app.screen.height / 2 - 20;
-                    container.addChild(descText);
-
-                    if (exp >= 50 && nivel === 1 ||
-                        exp >= 100 && nivel === 2 ||
-                        exp >= 150 && nivel === 3 ||
-                        exp >= 250 && nivel === 4) {
-                        nivel = nivel + 1;
-                        const lvlText = new PIXI.Text('Subiu para o nível ' + nivel, style2);
-                        lvlText.anchor.set(0.5);
-                        lvlText.x = app.screen.width / 2;
-                        lvlText.y = app.screen.height / 2 + 25;
-                        container.addChild(lvlText);
-                        upou = true;
-                    }
-
-                    if (upou === true) {
-                        const atakText = new PIXI.Text('Atak▲', style3);
-                        atakText.anchor.set(0.5);
-                        atakText.x = app.screen.width / 2 - 75;
-                        atakText.y = app.screen.height / 2 + 75;
-
-                        atakText.interactive = true;
-                        atakText.buttonMode = true;
-                        atakText.on('pointerdown', onClickAtak);
-                        container.addChild(atakText);
-                        function onClickAtak() {
-                            status.atk = status.atk + 1;
-                            win.stop();
-                            container.destroy({
-                                children: true, texture: true,
-                                baseTexture: true
-                            });
-                            upou = false;
-                            start_game();
-                        }
-
-                        const hpText = new PIXI.Text('HP▲', style3);
-                        hpText.anchor.set(0.5);
-                        hpText.x = app.screen.width / 2;
-                        hpText.y = app.screen.height / 2 + 75;
-
-                        hpText.interactive = true;
-                        hpText.buttonMode = true;
-                        hpText.on('pointerdown', onClickHp);
-                        container.addChild(hpText);
-                        function onClickHp() {
-                            status.maxHp = status.maxHp + 5;
-                            win.stop();
-                            container.destroy({
-                                children: true, texture: true,
-                                baseTexture: true
-                            });
-                            upou = false;
-                            start_game();
-                        }
-
-                        const expText = new PIXI.Text('EXP▲', style3);
-                        expText.anchor.set(0.5);
-                        expText.x = app.screen.width / 2 + 75;
-                        expText.y = app.screen.height / 2 + 75;
-
-                        expText.interactive = true;
-                        expText.buttonMode = true;
-                        expText.on('pointerdown', onClickExp);
-                        container.addChild(expText);
-                        function onClickExp() {
-                            xpGain = xpGain + 150;
-                            win.stop();
-                            container.destroy({
-                                children: true, texture: true,
-                                baseTexture: true
-                            });
-                            upou = false;
-                            start_game();
-                        }
-                    }
-                    else {
-                        const tryText = new PIXI.Text((nivel === 5 ? 'Fim de jogo' : "Continuar →"), style2);
-                        tryText.anchor.set(0.5);
-                        tryText.x = app.screen.width / 2;
-                        tryText.y = app.screen.height / 2 + 120;
-                        tryText.interactive = true;
-                        tryText.buttonMode = true;
-                        tryText.on('pointerdown', onClick);
-                        container.addChild(tryText);
-                        function onClick() {
-                            if (nivel === 5) {
-                                if (localStorage.getItem("key") == 1) {
-                                    localStorage.setItem("key", 2)
-                                    window.location.reload();
-                                }
-                                else if (localStorage.getItem("key") == 2) {
-                                    container.destroy({
-                                        children: true, texture: true,
-                                        baseTexture: true
-                                    });
-                                    textoFade(circle1Intro, 'out');
-                                    textoFade(circle2Intro, 'out');
-                                    const tryText2 = new PIXI.Text("Parabéns, você está livre!", {
-                                        fontFamily: 'Share Tech Mono',
-                                        fontSize: 18,
-                                        fontWeight: 500,
-                                        fill: '#000000', // gradient
-                                    });
-                                    tryText2.anchor.set(0.5);
-                                    tryText2.x = app.screen.width / 2;
-                                    tryText2.y = app.screen.height / 2;
-                                    app.stage.addChild(tryText2);
-                                    document.querySelector("body").style.background = "white";
-                                    nature.play();
-                                    setTimeout(() => {
-                                        // FINAL
-                                        localStorage.setItem("key", 0);
-                                        window.close();
-                                    }, 12000)
-
-                                }
-                                else {
-                                    localStorage.setItem("key", 1);
-                                    window.location.reload();
-                                }
-                            }
-                            else {
-                                win.stop();
-                                container.destroy({
-                                    children: true, texture: true,
-                                    baseTexture: true
-                                });
-                                start_game();
-                            }
-                        }
-                    }
+                if (pontuacao1 === 10) {
+                    containerStart.destroy();
+                    const containerGanhou = new PIXI.Container();
+                    app.stage.addChild(containerGanhou);
+                    createText("Você ganhou!\nQuer tentar denovo?", '0x000000', app.screen.width / 2, app.screen.height / 2, true, containerGanhou, init, true)
                 }
-                else if (status.hp <= 0) {
-                    battle.stop();
-                    lose.play();
-                    exp = exp + xpGain;
-                    // alert("Perdeu o jogo!");
-                    apagandoTudo()
-                    const style = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                        fontSize: 28,
-                        fontWeight: 500,
-                        fill: '#ffffff', // gradient
-                    });
-
-                    const basicText = new PIXI.Text('Fim de jogo', style);
-                    basicText.anchor.set(0.5);
-                    basicText.x = app.screen.width / 2;
-                    basicText.y = app.screen.height / 2 - 75;
-                    container.addChild(basicText);
-
-                    const style2 = new PIXI.TextStyle({
-                        fontFamily: 'Share Tech Mono',
-                        fontSize: 18,
-                        fontWeight: 500,
-                        fill: '#ffffff', // gradient
-                    });
-
-                    const descText = new PIXI.Text('Parece que hoje você\nfoi derrotado...', style2);
-                    descText.anchor.set(0.5);
-                    descText.x = app.screen.width / 2;
-                    descText.y = app.screen.height / 2;
-                    container.addChild(descText);
-
-                    // SE PERDER... 
-                    const tryText = new PIXI.Text('Tentar novamente', style2);
-                    tryText.anchor.set(0.5);
-                    tryText.x = app.screen.width / 2;
-                    tryText.y = app.screen.height / 2 + 100;
-
-                    tryText.interactive = true;
-                    tryText.buttonMode = true;
-                    tryText.on('pointerdown', onClick);
-
-                    function onClick() {
-                        window.location.reload();
-                    }
-                    container.addChild(tryText);
+                else if (pontuacao2 === 10) {
+                    containerStart.destroy();
+                    const containerPerdeu = new PIXI.Container();
+                    app.stage.addChild(containerPerdeu);
+                    createText("Você perdeu\nQuer tentar denovo?", '0x000000', app.screen.width / 2, app.screen.height / 2, true, containerPerdeu, init, true)
                 }
             }
-
-            resultado = 'Escolha um simbolo';
-
-            const pontosText = new PIXI.Text('HP: ' + status.hp + '/' + status.maxHp + '\nEXP: ' + exp + (nivel === 1 ? "/50" : nivel === 2 ? "/100" : nivel === 3 ? "/150" : nivel === 4 ? "/250" : '') + '\nAtak: ' + status.atk, {
-                fontFamily: 'Share Tech Mono',
-                fontSize: 16,
-                fontWeight: 500,
-                fill: '#ffffff',
-                align: 'center',
-            });
-            pontosText.anchor.set(0.5);
-            pontosText.x = app.screen.width / 2;
-            pontosText.y = app.screen.height / 2 + 110;
-            container.addChild(pontosText);
-
-            const pontosTextMonster = new PIXI.Text('HP: ' + statusMonstro.hp + '/' + statusMonstro.maxHp, {
-                fontFamily: 'Share Tech Mono',
-                fontSize: 18,
-                fontWeight: 500,
-                fill: '#ffffff',
-            });
-
-            pontosTextMonster.anchor.set(0.5);
-            pontosTextMonster.x = app.screen.width / 2;
-            pontosTextMonster.y = app.screen.height / 2 - 120;
-            container.addChild(pontosTextMonster);
-
-            const resultText = new PIXI.Text(resultado, {
-                fontFamily: 'Share Tech Mono',
-                fontSize: 14,
-                fontWeight: 500,
-                fill: '#ffffff',
-            });
-
-            resultText.anchor.set(0.5);
-            resultText.x = app.screen.width / 2;
-            resultText.y = app.screen.height / 2 + 20;
-            container.addChild(resultText);
         }
     }
 }
 
-
-
-
-
-
-
-
-
-
-//TODO FADE BACKGROUND
-function bgFade(fade, tilingSprite) {
-    if (fade === 'in') {
-        fade = 1;
-        tilingSprite.alpha = 0;
-        TweenMax.to(tilingSprite, 3.0, { alpha: fade, repeat: 0, yoyo: false });
-        app.stage.addChild(tilingSprite);
+function createText(valor, cor, alignX, alignY, interativo, container, funcLink, destroyer) {
+    const basicText = new PIXI.Text(valor, {
+        fill: cor,
+        fontSize: 20
+    });
+    basicText.anchor.set(.5);
+    basicText.x = alignX;
+    basicText.y = alignY;
+    if (interativo === true) {
+        basicText.interactive = true;
+        basicText.cursor = 'pointer';
+        basicText.on('pointerdown', () => {
+            if (destroyer === true) {
+                container.destroy();
+            }
+            funcLink();
+        })
     }
-    else if (fade === 'out') {
-        fade = 0;
-        TweenMax.to(tilingSprite, 3.0, { alpha: fade, repeat: 0, yoyo: false });
-        setTimeout(() => {
-            app.stage.removeChild(tilingSprite);
-        }, 3000)
-    }
-}
-
-//TODO FUNÇÕES E MECANISMOS
-function textoFade(textSample, fade, textoIn, tamanho, w, h, color) {
-    if (fade === 'in') {
-        fade = 1;
-        if (tamanho !== '') {
-            textSample.style.fontSize = tamanho;
-            textSample.style.align = 'center';
-        }
-        if (color !== '') {
-            textSample.style.fill = color;
-        }
-        if (textoIn !== '') {
-            textSample.text = textoIn;
-        }
-        textSample.anchor.set(0.5);
-        textSample.alpha = 0;
-        if (w !== '') {
-            textSample.x = app.screen.width / 2 + w;
-        }
-        if (h !== '') {
-            textSample.y = app.screen.height / 2 + h;
-        }
-        TweenMax.to(textSample, 1.0, { alpha: fade, repeat: 0, yoyo: false });
-    }
-    else if (fade === 'out') {
-        fade = 0;
-        TweenMax.to(textSample, 1.0, { alpha: fade, repeat: 0, yoyo: false });
-    }
+    container.addChild(basicText);
 }
