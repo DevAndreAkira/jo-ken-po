@@ -160,14 +160,13 @@ window.onload = function () {
                         textPlayer2.text = pontuacao2;
                         textGame.text = 'Perdeu';
                     }
-                    ganhouPerdeu()
+                    ganhouPerdeu();
                 })
                 containerStart.addChild(button);
                 buttons.push(button);
             }
 
             function ganhouPerdeu() {
-
                 if (pontuacao1 === 10) {
                     containerStart.destroy();
                     const containerGanhou = new PIXI.Container();
